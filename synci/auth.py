@@ -7,10 +7,7 @@ from flask import (
     url_for, current_app
 )
 
-# from synci.db import get_db
-
 SCOPES = "user-read-playback-state user-modify-playback-state user-read-email"
-
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 

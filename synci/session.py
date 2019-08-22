@@ -5,7 +5,6 @@ from flask import (
 )
 from synci.auth import login_required
 from synci.constants import WORD_LIST_PATH
-# from synci.db import get_db
 
 bp = Blueprint("session", __name__, url_prefix="/session")
 sessions = []

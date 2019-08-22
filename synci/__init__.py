@@ -15,7 +15,6 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
         CLIENT_ID='spotify client id',
-        DATABASE=os.path.join(app.instance_path, 'synci.sqlite'),
     )
 
     # build static files
