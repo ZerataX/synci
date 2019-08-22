@@ -9,14 +9,14 @@ from flask import (
 
 # from synci.db import get_db
 
-SCOPES = "user-read-private%user-read-email"
+SCOPES = "user-read-playback-state user-modify-playback-state"
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 @bp.route('/register')
 def register():
-    # https://developer.spotify.com/documentation/general/guides/authorization-guide/#client-credentials-flow
+    # https://developer.spotify.com/documentation/general/guides/authorization-guide/#implicit-grant-flow
     g.state = random.getrandbits(128)
     auth_url = f"https://accounts.spotify.com/authorize " + \
                f"?client_id={current_app.config['client_id']}" + \

@@ -22,10 +22,12 @@ def join(session):
             if session == x['name']:
                 session = x
                 break
-        if session and g.user == session['author']:
+
+        if session and session['author'] == g.user:
             for user in session['followers']:
                 # sync song
                 pass
+
     if request.method == 'GET':
         for x in sessions:
             if session == x['name']:
@@ -37,4 +39,5 @@ def join(session):
             "song": None,
             "playtime": 0
         })
+
         return render_template('session/session.html')
