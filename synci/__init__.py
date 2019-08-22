@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, g
+from flask import Flask, render_template
 from flask_assets import Environment, Bundle
 from webassets.filter import register_filter
 
@@ -46,6 +46,6 @@ def create_app(test_config=None):
 
     @app.route('/', methods=('GET', 'POST'))
     def index():
-        return render_template('index.html', logged_in=bool(g.user))
+        return render_template('index.html')
 
     return app

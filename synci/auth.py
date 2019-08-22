@@ -11,10 +11,10 @@ from flask import (
 
 SCOPES = "user-read-playback-state user-modify-playback-state user-read-email"
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
-@bp.route('/login')
+@bp.route("/login")
 def login():
     # https://developer.spotify.com/documentation/general/guides/authorization-guide/#implicit-grant-flow
     state = str(random.getrandbits(128))
@@ -24,35 +24,36 @@ def login():
                f"&scope={urllib.parse.quote(SCOPES)}" + \
                f"&state={state}&response_type=token"
     resp = redirect(auth_url)
-    resp.set_cookie('state', state)
+    resp.set_cookie("state", state)
 
     return resp
 
 
-@bp.route('/callback')
+@bp.route("/callback")
 def callback():
     error = request.values.get("error")
+
     if error:
         flash(error)
         if error == "access_denied":
             abort(401)
         abort(500)
 
-    session['user_id'] = random.getrandbits(128)
+    session["user_id"] = random.getrandbits(128)
 
-    return redirect(url_for('index'))
+    return redirect(url_for("index"))
 
 
 @bp.before_app_request
 def load_logged_in_user():
-    g.user = session.get('user_id')
+    g.user = session.get("user_id")
 
 
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user is None:
-            return redirect(url_for('auth.login'))
+        if "user_id" not in session:
+            return redirect(url_for("auth.login"))
 
         return view(**kwargs)
 

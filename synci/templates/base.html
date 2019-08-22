@@ -4,21 +4,20 @@
     <link rel="stylesheet" href="{{ ASSET_URL }}">
 {% endassets %}
 <nav>
-  <h1>Synci</h1>
-  <ul>
-    {% if logged_in %}
-      <li><span>Hey dude</span>
+    <h1>Synci</h1>
+    {% if "user_id" in session %}
+        <span id="welcome">Hey dude, start partying now!</span>
     {% else %}
-      <li><a href="{{ url_for('auth.login') }}">Login with Spotify</a>
+        <a href="{{ url_for('auth.login') }}">Login with Spotify</a>
     {% endif %}
-  </ul>
 </nav>
 <section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
 </section>

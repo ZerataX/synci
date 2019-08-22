@@ -1,43 +1,61 @@
+import random
+
 from flask import (
-    Blueprint, g, render_template, request
+    Blueprint, g, render_template, request, redirect, url_for, jsonify
 )
 from synci.auth import login_required
+from synci.constants import WORD_LIST_PATH
 # from synci.db import get_db
 
-bp = Blueprint('session', __name__, url_prefix='/session')
+bp = Blueprint("session", __name__, url_prefix="/session")
 sessions = []
 
 
-@bp.route('/')
+def random_readable_string(length=3, wordlist=WORD_LIST_PATH):
+    with open(wordlist) as f:
+        lines = f.read().splitlines()
+        string = ""
+        for _ in range(length):
+            string += random.choice(lines).title()
+    return string
+
+
+def get_session(name):
+    for session in sessions:
+        if name == session["name"]:
+            return session
+
+
+@bp.route("/")
 @login_required
-def create():
-    return render_template('session/index.html')
+def index():
+    return redirect(url_for('session.join', session=random_readable_string()))
 
 
-@bp.route('/<session>', methods=('GET', 'POST'))
+@bp.route("/<session>")
 @login_required
 def join(session):
-    if request.method == 'POST':
-        for x in sessions:
-            if session == x['name']:
-                session = x
-                break
+    for x in sessions:
+        if session == x["name"]:
+            return render_template("session.html")
+    sessions.append({
+        "name": session,
+        "author": g.user,
+        "followers": [],
+        "song": None,
+        "playtime": 0
+    })
 
-        if session and session['author'] == g.user:
-            for user in session['followers']:
-                # sync song
-                pass
+    return render_template("session.html")
 
-    if request.method == 'GET':
-        for x in sessions:
-            if session == x['name']:
-                return render_template('session/session.html')
-        sessions.append({
-            "name": session,
-            "author": g.user,
-            "followers": [],
-            "song": None,
-            "playtime": 0
-        })
 
-        return render_template('session/session.html')
+@bp.route("/<session>/info", methods=("GET", "PUT"))
+@login_required
+def info(session):
+    if request.method == "PUT":
+        session = get_session(session)
+        if session and session["author"] == g.user:
+            pass  # set song and playtime
+
+    if request.method == "GET":
+        return jsonify(get_session(session))
