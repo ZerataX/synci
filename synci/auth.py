@@ -17,13 +17,14 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/login')
 def login():
     # https://developer.spotify.com/documentation/general/guides/authorization-guide/#implicit-grant-flow
+    state = str(random.getrandbits(128))
     auth_url = f"https://accounts.spotify.com/authorize" + \
                f"?client_id={current_app.config['CLIENT_ID']}" + \
                f"&redirect_uri={url_for('auth.callback', _external=True)}" + \
                f"&scope={urllib.parse.quote(SCOPES)}" + \
-               f"&state={session['state']}&response_type=token"
+               f"&state={state}&response_type=token"
     resp = redirect(auth_url)
-    resp.set_cookie('state', str(random.getrandbits(128)))
+    resp.set_cookie('state', state)
 
     return resp
 
