@@ -11,4 +11,4 @@ class SassFilter(Filter):
     def input(self, _in, out, **kwargs):
         out.write(sass.compile(string=_in.read(), 
                                output_style="compact",
-                               include_paths=kwargs.source_path))
+                               include_paths=kwargs['source_path']))

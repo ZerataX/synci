@@ -1,0 +1,24 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Synci</title>
+{% assets "sass_all" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+{% endassets %}
+<nav>
+  <h1>Synci</h1>
+  <ul>
+    {% if logged_in %}
+      <li><span>Hey dude</span>
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>

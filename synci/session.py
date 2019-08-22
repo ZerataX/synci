@@ -14,7 +14,6 @@ def create():
     return render_template('session/index.html')
 
 
-
 @bp.route('/<session>', methods=('GET', 'POST'))
 @login_required
 def join(session):
