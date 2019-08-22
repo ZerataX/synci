@@ -9,7 +9,7 @@
     {% if logged_in %}
       <li><span>Hey dude</span>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Login with Spotify</a>
     {% endif %}
   </ul>
 </nav>
