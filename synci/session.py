@@ -8,14 +8,15 @@ bp = Blueprint('session', __name__, url_prefix='/session')
 sessions = []
 
 
-@login_required()
 @bp.route('/')
+@login_required
 def create():
     return render_template('session/index.html')
 
 
-@login_required()
+
 @bp.route('/<session>', methods=('GET', 'POST'))
+@login_required
 def join(session):
     if request.method == 'POST':
         for x in sessions:

@@ -17,12 +17,13 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register')
 def register():
     # https://developer.spotify.com/documentation/general/guides/authorization-guide/#implicit-grant-flow
-    g.state = random.getrandbits(128)
-    auth_url = f"https://accounts.spotify.com/authorize " + \
-               f"?client_id={current_app.config['client_id']}" + \
-               f"&redirect_uri={url_for('auth.register')}" + \
+    session.clear()
+    session.state = random.getrandbits(128)
+    auth_url = f"https://accounts.spotify.com/authorize" + \
+               f"?client_id={current_app.config['CLIENT_ID']}" + \
+               f"&redirect_uri={url_for('auth.login', _external=True)}" + \
                f"&scope={urllib.parse.quote(SCOPES)}" + \
-               f"&state={g.state}&response_type=token"
+               f"&state={session.state}&response_type=token"
     return redirect(auth_url)
 
 
@@ -30,8 +31,7 @@ def register():
 def login():
     error = request.args.get('error')
     state = request.args.get('state')
-    if state == g.state and not error:
-        session.clear()
+    if 'state' in session and session.state == state and not error:
         session['user_id'] = 3  # autoinc user id?
         return redirect(url_for('index'))
     flash(error)
