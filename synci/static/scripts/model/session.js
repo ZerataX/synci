@@ -32,7 +32,7 @@ export class Session {
         headers: this.header,
         body: JSON.stringify({
           'author': user.user_id,
-          'followers': users.map(({ x }) => x.user_id),
+          'followers': users,
           'name': this.name,
           'playtime': song.timestamp,
           'song': song.uri,
