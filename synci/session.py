@@ -42,7 +42,8 @@ def join(session):
         "author": g.user,
         "followers": [],
         "song": None,
-        "playtime": 0
+        "api_url": None,
+        "timestamp": 0
     })
 
     return render_template("session.html")
