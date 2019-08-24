@@ -45,6 +45,6 @@ def create_app(test_config=None):
 
     @app.route('/', methods=('GET', 'POST'))
     def index():
-        return render_template('index.html')
+        return render_template('pages/index.html')
 
     return app

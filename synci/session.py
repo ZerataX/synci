@@ -67,10 +67,10 @@ def join(name):
     if session:
         if g.user != session.author:
             session.followers.add(g.user)
-        return render_template("session.html")
+        return render_template("pages/session.html")
     sessions.append(session(name, g.user))
 
-    return render_template("session.html")
+    return render_template("pages/session.html")
 
 
 @bp.route("/<session>/info", methods=("GET", "PUT"))
