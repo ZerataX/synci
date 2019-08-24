@@ -26,21 +26,16 @@ export class Session {
   }
 
   setInfo (song, user, users) {
-    return async () => {
-      const rawResponse = await window.fetch(this.endpoint, {
-        method: 'PUT',
-        headers: this.header,
-        body: JSON.stringify({
-          'author': user.user_id,
-          'followers': users,
-          'name': this.name,
-          'playtime': song.timestamp,
-          'song': song.uri,
-          'api_url': song.api
-        })
-      })
-      const content = await rawResponse.json()
-      console.log(content)
-    }
+    let body = JSON.stringify({
+      'author': user.user_id,
+      'followers': users,
+      'name': this.name,
+      'timestamp': song.timestamp,
+      'song': song.uri,
+      'api_url': song.api
+    })
+    jsonFetch(this.endpoint, this.access_token, 'PUT', body).then(data =>
+      console.log(data)
+    )
   }
 }

@@ -5,7 +5,6 @@ const API_ENDPOINT = 'https://api.spotify.com/v1/'
 export class Song {
   constructor (uri, timestamp, api, accessToken, offset = 0) {
     this.access_token = accessToken
-    this.header = { 'Content-Type': `Authorization: Bearer ${this.access_token}` }
     this.api = api
     this.uri = uri
     this.offset = offset
@@ -19,21 +18,16 @@ export class Song {
 
   play () {
     let url = `${API_ENDPOINT}/me/player/play`
-    return async () => {
-      const rawResponse = await window.fetch(url, {
-        method: 'PUT',
-        headers: this.header,
-        body: JSON.stringify({
-          'context_uri': this.uri,
-          'offset': {
-            'position': this.offset
-          },
-          'position_ms': this.timestamp
-        })
-      })
-      const content = await rawResponse.json()
-      console.log(content)
-    }
+    let body = JSON.stringify({
+      'context_uri': this.uri,
+      'offset': {
+        'position': this.offset
+      },
+      'position_ms': this.timestamp
+    })
+    jsonFetch(url, this.access_token, 'PUT', body).then(data =>
+      console.log(data)
+    )
   }
 }
 
@@ -41,16 +35,16 @@ export class User {
   constructor (accessToken, userID) {
     this.access_token = accessToken
     this.user_id = userID
-    this.header = { 'Content-Type': `Authorization: Bearer ${this.access_token}` }
     this.song = null
     this.getProfile()
   }
 
   getProfile () {
-    jsonFetch(`${API_ENDPOINT}/me`).then(data => {
+    let url = `${API_ENDPOINT}/me`
+    jsonFetch(url, this.access_token).then(data => {
       this.username = data.display_name
       this.profile = data.spotify
-      this.image = data.images[0]
+      this.image = data.images[0].url
     })
       .catch(err => {
         console.error(err)
@@ -59,7 +53,8 @@ export class User {
   }
 
   getCurrentSong () {
-    jsonFetch(`${API_ENDPOINT}/player`).then(data => {
+    let url = `${API_ENDPOINT}/player`
+    jsonFetch(url, this.access_token).then(data => {
       this.device = data.device.id
       this.song = Song(data.context.uri,
         parseInt(data.progress_ms),
