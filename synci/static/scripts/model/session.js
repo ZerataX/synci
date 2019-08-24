@@ -1,16 +1,14 @@
 import { Song } from 'model/spotify'
 import { jsonFetch } from 'util'
 
-const API_ENDPOINT = '127.0.0.1:5000'
+const API_ENDPOINT = window.location.hostname
 
 export class Session {
   constructor (name, accessToken) {
     this.name = name
     this.access_token = accessToken
-    this.author = null
-    this.followers = []
-    this.song = null
     this.endpoint = `${API_ENDPOINT}/session/${this.name}/info`
+    this.getInfo()
   }
 
   getInfo () {

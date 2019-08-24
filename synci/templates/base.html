@@ -1,23 +1,27 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Synci</title>
-{% assets "sass_all" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}">
-{% endassets %}
-<nav>
-    <h1>Synci</h1>
-    {% if "user_id" in session %}
-        <span id="welcome">Hey dude, start partying now!</span>
-    {% else %}
-        <a href="{{ url_for('auth.login') }}">Login with Spotify</a>
-    {% endif %}
-</nav>
-<section class="content" data-controller="{{ self.title() }}">
-    <header>
-        {% block header %}{% endblock %}
-    </header>
-    {% for message in get_flashed_messages() %}
-        <div class="flash">{{ message }}</div>
-    {% endfor %}
-
-    {% block content %}{% endblock %}
-</section>
+<head>
+    <title>{% block title %}{% endblock %} - Synci</title>
+    {% assets "sass_all" %}
+        <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+</head>
+<body data-controller="{{ self.name() }}">
+    <nav>
+        <h1>Synci</h1>
+        {% if "user_id" in session %}
+            <span id="welcome">Hey dude, start partying now!</span>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Login with Spotify</a>
+        {% endif %}
+    </nav>
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+    
+        {% block content %}{% endblock %}
+    </section>
+</body>
