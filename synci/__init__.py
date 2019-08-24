@@ -20,8 +20,8 @@ def create_app(test_config=None):
     # build static files
     assets = Environment(app)
     assets.url = app.static_url_path
-    sass = Bundle('styles/main.sass', filters='pysass', output='main.css')
-    assets.register('sass_all', sass)
+    css = Bundle('styles/main.sass', filters='pysass', output='main.css')
+    assets.register('css_all', css)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
