@@ -1,5 +1,12 @@
-*.css
+# node
+package-lock.json
+node_modules/
+
+# user specific
 .vscode/
+
+# dist
+*.css
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
