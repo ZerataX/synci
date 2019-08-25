@@ -5,7 +5,7 @@ const synci = {
   common: {
     init () {
       console.log(activeUser)
-      console.log(`welcome ${activeUser.username}`)
+      console.log(`logged in as ${activeUser.username}`)
     }
   },
   index: {

@@ -1,14 +1,14 @@
 import { User } from '../model/spotify.js'
 import { getCookie, setCookie } from '../util.js'
 
-let now = Date.now
+var now = Date.now()
+var accessToken = null
 
-let hashes = window.location.hash
+let hashes = window.location.hash.substring(1)
 let params = {}
 if (hashes) {
   hashes.split('&').map(hash => {
     let [key, val] = hash.split('=')
-    key = key.replace('#', '')
     params[key] = decodeURIComponent(val)
   })
 
@@ -21,11 +21,20 @@ if (hashes) {
   }
 }
 
-// probably check this periodically
-let exDate = new Date(getCookie('expiration_date'))
-let accessToken = getCookie('access_token')
-// check if access token is longer valid than 10 min
-if (!accessToken || exDate - now < 10 * 60 * 1000) {
-  window.location.assign('auth/login')
+const checkToken = () => {
+  console.log('checking if access token is still valid...')
+  let exDate = new Date(getCookie('expiration_date'))
+  accessToken = getCookie('access_token')
+  // check if access token is longer valid than 10 min
+  if (!accessToken || exDate - now < 10 * 60 * 1000) {
+    window.location.assign('auth/login')
+  }
+  console.log('...success, token is still valid.')
 }
+
+(function () {
+  checkToken()
+  setTimeout(checkToken, 60 * 1000)
+})()
+
 export var activeUser = new User(accessToken, getCookie('user_id'))
