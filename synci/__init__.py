@@ -20,7 +20,9 @@ def create_app(test_config=None):
     # build static files
     assets = Environment(app)
     assets.url = app.static_url_path
-    css = Bundle('styles/main.sass', filters='pysass', output='main.css')
+    css = Bundle('styles/main.sass',
+                 filters='pysass',
+                 output='styles/main.css')
     assets.register('css_all', css)
 
     if test_config is None:

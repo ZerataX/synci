@@ -1,31 +1,31 @@
-import { jsonFetch } from 'util'
+import { jsonFetch } from '../util.js'
 
-const API_ENDPOINT = 'https://api.spotify.com/v1/'
+const API_ENDPOINT = 'https://api.spotify.com/v1'
 
 export class Song {
   constructor (uri, timestamp, api, accessToken, offset = 0) {
-    this.access_token = accessToken
-    this.api = api
-    this.uri = uri
-    this.offset = offset
-    this.timestamp = timestamp
+    this._access_token = accessToken
+    this._api = api
+    this._uri = uri
+    this._offset = offset
+    this._timestamp = timestamp
   }
 
-  get timestamp () { return this.timestamp }
-  get api () { return this.api }
-  get uri () { return this.uri }
-  get offset () { return this.offset }
+  get timestamp () { return this._timestamp }
+  get api () { return this._api }
+  get uri () { return this._uri }
+  get offset () { return this._offset }
 
   play () {
     let url = `${API_ENDPOINT}/me/player/play`
     let body = JSON.stringify({
-      'context_uri': this.uri,
+      'context_uri': this._uri,
       'offset': {
-        'position': this.offset
+        'position': this._offset
       },
-      'position_ms': this.timestamp
+      'position_ms': this._timestamp
     })
-    jsonFetch(url, this.access_token, 'PUT', body).then(data =>
+    jsonFetch(url, this._access_token, 'PUT', body).then(data =>
       console.log(data)
     )
   }
@@ -33,18 +33,17 @@ export class Song {
 
 export class User {
   constructor (accessToken, userID) {
-    this.access_token = accessToken
-    this.user_id = userID
-    this.song = null
+    this._access_token = accessToken
+    this._user_id = userID
     this.getProfile()
   }
 
   getProfile () {
     let url = `${API_ENDPOINT}/me`
-    jsonFetch(url, this.access_token).then(data => {
-      this.username = data.display_name
-      this.profile = data.spotify
-      this.image = data.images[0].url
+    jsonFetch(url, this._access_token).then(data => {
+      this._username = data.display_name
+      this._link = data.external_urls.spotify
+      this._image = data.images[0].url
     })
       .catch(err => {
         console.error(err)
@@ -54,12 +53,12 @@ export class User {
 
   getCurrentSong () {
     let url = `${API_ENDPOINT}/player`
-    jsonFetch(url, this.access_token).then(data => {
-      this.device = data.device.id
-      this.song = Song(data.context.uri,
+    jsonFetch(url, this._access_token).then(data => {
+      this._device = data.device.id
+      this._song = Song(data.context.uri,
         parseInt(data.progress_ms),
         data.context.href,
-        this.access_token)
+        this._access_token)
     })
       .catch(err => {
         console.error(err)
@@ -67,9 +66,9 @@ export class User {
       })
   }
 
-  get username () { return this.username }
-  get profile () { return this.profile }
-  get image () { return this.image }
-  get song () { return this.song }
-  set song (song) { this.song = song }
+  get username () { return this._username }
+  get link () { return this._link }
+  get image () { return this._image }
+  get song () { return this._song }
+  set song (song) { this._song = song }
 }

@@ -1,7 +1,11 @@
+'use strict'
+import { activeUser } from './controller/auth.js'
+
 const synci = {
   common: {
     init () {
-      // application wide code
+      console.log(activeUser)
+      console.log(`welcome ${activeUser.username}`)
     }
   },
   index: {

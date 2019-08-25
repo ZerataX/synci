@@ -37,7 +37,7 @@ def callback():
         abort(500)
 
     session["user_id"] = random.getrandbits(128)
-
+    # redirect to last visited page (check cookie)
     return redirect(url_for("index"))
 
 
