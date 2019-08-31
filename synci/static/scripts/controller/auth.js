@@ -25,6 +25,9 @@ const checkToken = () => {
   console.log('checking if access token is still valid...')
   let exDate = new Date(getCookie('expiration_date'))
   accessToken = getCookie('access_token')
+  if (accessToken === null) {
+    return // user has never logged in
+  }
   // check if access token is longer valid than 10 min
   if (!accessToken || exDate - now < 10 * 60 * 1000) {
     window.location.assign('auth/login')

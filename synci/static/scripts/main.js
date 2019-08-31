@@ -3,7 +3,8 @@ import { activeUser } from './controller/auth.js'
 
 const synci = {
   common: {
-    init () {
+    async init () {
+      await activeUser.loggedIn
       console.log(activeUser)
       console.log(`logged in as ${activeUser.username}`)
     }

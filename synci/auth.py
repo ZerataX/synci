@@ -38,7 +38,10 @@ def callback():
 
     session["user_id"] = random.getrandbits(128)
     # redirect to last visited page (check cookie)
-    return redirect(url_for("index"))
+    response = redirect(url_for("index"))
+    response.set_cookie('user_id', str(session["user_id"]))
+
+    return response
 
 
 @bp.before_app_request

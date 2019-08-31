@@ -35,19 +35,21 @@ export class User {
   constructor (accessToken, userID) {
     this._access_token = accessToken
     this._user_id = userID
-    this.getProfile()
+    this._logged_in = (this._access_token) ? this.getProfile() : false
   }
 
-  getProfile () {
+  async getProfile () {
     let url = `${API_ENDPOINT}/me`
-    jsonFetch(url, this._access_token).then(data => {
+    await jsonFetch(url, this._access_token).then(data => {
       this._username = data.display_name
       this._link = data.external_urls.spotify
-      this._image = data.images[0].url
+      this._image = ('images' in data) ? data.images[0].url : null
+      return true
     })
       .catch(err => {
         console.error(err)
         window.alert('could not retrieve profile information')
+        return false
       })
   }
 
@@ -67,6 +69,7 @@ export class User {
   }
 
   get username () { return this._username }
+  get loggedIn () { return this._logged_in }
   get link () { return this._link }
   get image () { return this._image }
   get song () { return this._song }
