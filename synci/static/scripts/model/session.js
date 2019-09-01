@@ -1,39 +1,40 @@
-import { Song } from './model/spotify.js'
-import { jsonFetch } from '../util'
-
-const API_ENDPOINT = window.location.hostname
+import { Song } from './spotify.js'
+import { jsonFetch } from '../util.js'
 
 export class Session {
   constructor (name, accessToken) {
     this._name = name
     this._access_token = accessToken
-    this._endpoint = `${API_ENDPOINT}/session/${this._name}/info`
+    this._endpoint = `/session/${this._name}/info`
     this.getInfo()
   }
 
-  getInfo () {
-    jsonFetch(this._endpoint).then(data => {
+  async getInfo () {
+    await jsonFetch(this._endpoint).then(data => {
       this._author = data.author
       this._followers = data.followers
-      this._song = Song(data.song, data.timestamp, data.api_url, this._access_token)
+      if ('song' in data) {
+        this._song = new Song(data.song, data.timestamp, data.api_url, this._access_token)
+      }
+    }).catch(err => {
+      console.error(err)
+      window.alert('could not retrieve session info')
     })
-      .catch(err => {
-        console.error(err)
-        window.alert('could not retrieve session info')
-      })
   }
 
-  setInfo (song, user, users) {
+  async setInfo (song, author, followers) {
     let body = JSON.stringify({
-      'author': user.user_id,
-      'followers': users,
-      'name': this._name,
+      'author': author.userID,
+      'followers': followers,
       'timestamp': song.timestamp,
       'song': song.uri,
       'api_url': song.api
     })
-    jsonFetch(this._endpoint, this._access_token, 'PUT', body).then(data =>
-      console.log(data)
-    )
+    jsonFetch(this._endpoint, null, 'PUT', body).catch(err => {
+      console.error(err)
+      window.alert('could not update session with current song')
+    })
   }
+
+  get author () { return this._author }
 }

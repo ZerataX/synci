@@ -1,48 +1,50 @@
 'use strict'
-import { activeUser } from './controller/auth.js'
+import { activeUser, checkToken } from './controller/auth.js'
+import { updateSession } from './view/session.js'
 
 const synci = {
   common: {
     async init () {
       await activeUser.loggedIn
-      console.log(activeUser)
+      const authInterval = window.setInterval(() => { checkToken() }, 60 * 1000) // eslint-disable-line no-unused-vars
       console.log(`logged in as ${activeUser.username}`)
     }
   },
   index: {
-    init () {
+    async init () {
       // index page code
     }
   },
   session: {
-    init () {
-      // session page code
+    'name': window.location.pathname.replace('/session/', '').replace('/', ''),
+    async init () {
+      const SessionInterval = window.setInterval(() => { updateSession(synci.session.name, activeUser) }, 1000) // eslint-disable-line no-unused-vars
     }
   }
 }
 
 // based on https://www.viget.com/articles/extending-paul-irishs-comprehensive-dom-ready-execution/
 const UTIL = {
-  exec (controller, action) {
+  async exec (controller, action) {
     let ns = synci
 
     action = (action === undefined) ? 'init' : action
     if (controller !== '' && ns[controller] && typeof ns[controller][action] === 'function') {
-      ns[controller][action]()
+      await ns[controller][action]()
     }
   },
-  init () {
+  async init () {
     let body = document.body
 
     let controller = body.getAttribute('data-controller')
 
     let action = body.getAttribute('data-action')
-    UTIL.exec('common')
-    UTIL.exec(controller)
-    UTIL.exec(controller, action)
+    await UTIL.exec('common')
+    await UTIL.exec(controller)
+    await UTIL.exec(controller, action)
   }
 }
 
-window.onload = function () {
-  UTIL.init()
+window.onload = async function () {
+  await UTIL.init()
 }

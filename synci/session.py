@@ -19,12 +19,11 @@ class Session:
 
     def json(self):
         result = {
-            "name": self.name,
-            "author": self.author,
-            "followers": self.followers,
-            "song": self.song.url,
-            "api_url": self.song.api,
-            "timestamp": self.song.timestamp
+            "author": str(self.author),
+            "followers": list(self.followers),
+            "song": self.song.uri if self.song else None,
+            "api_url": self.song.api if self.song else None,
+            "timestamp": self.song.timestamp if self.song else None
         }
         return result
 
@@ -68,7 +67,7 @@ def join(name):
         if g.user != session.author:
             session.followers.add(g.user)
         return render_template("pages/session.html")
-    sessions.append(session(name, g.user))
+    sessions.append(Session(name, g.user))
 
     return render_template("pages/session.html")
 
@@ -82,17 +81,19 @@ def info(session):
     if request.method == "PUT":
         if session.author == g.user:
             data = request.json
-            session.name = data.name
+            author = int(data["author"])
             if (
-                data.author not in session.followers and
-                data.author != session.author
+                author not in session.followers and
+                author != session.author
                ):
                 abort(400)
-            session.author = data.author
-            followers = set(data.followers)
+            session.author = author
+            followers = set(data["followers"])
             for follower in followers:
                 if follower not in session.followers:
                     abort(400)
             session.followers = followers
-            session.song = Song(data.song, data.api_url, data.timestamp)
+            session.song = Song(data["song"],
+                                data["api_url"],
+                                data["timestamp"])
     return jsonify(session.json())
