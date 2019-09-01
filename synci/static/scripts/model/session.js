@@ -5,16 +5,28 @@ export class Session {
   constructor (name, accessToken) {
     this._name = name
     this._access_token = accessToken
+    this._timestamp = 0
     this._endpoint = `/session/${this._name}/info`
-    this.getInfo()
   }
 
   async getInfo () {
     await jsonFetch(this._endpoint).then(data => {
-      this._author = data.author
+      this._host = data.host
       this._followers = data.followers
-      if ('song' in data) {
-        this._song = new Song(data.song, data.timestamp, data.api_url, this._access_token)
+      this._timestamp = parseInt(data.timestamp)
+      if (data.song) {
+        const song = data.song
+        this._song = new Song(
+          song.time,
+          song.duration,
+          song.uri,
+          song.href,
+          song.name,
+          song.image,
+          song.artist,
+          this._access_token,
+          song.context
+        )
       }
     }).catch(err => {
       console.error(err)
@@ -22,13 +34,20 @@ export class Session {
     })
   }
 
-  async setInfo (song, author, followers) {
-    let body = JSON.stringify({
-      'author': author.userID,
-      'followers': followers,
-      'timestamp': song.timestamp,
-      'song': song.uri,
-      'api_url': song.api
+  async setInfo (song, host) {
+    const body = JSON.stringify({
+      host: host.userID,
+      timestamp: (new Date()).getTime(),
+      song: {
+        time: song.time,
+        duration: song.duration,
+        uri: song.uri,
+        href: song.href,
+        name: song.name,
+        image: song.image,
+        artist: song.artist,
+        context: ('context' in song) ? song.context : null
+      }
     })
     jsonFetch(this._endpoint, null, 'PUT', body).catch(err => {
       console.error(err)
@@ -36,5 +55,7 @@ export class Session {
     })
   }
 
-  get author () { return this._author }
+  get host () { return this._host }
+  get timestamp () { return this._timestamp }
+  get song () { return this._song }
 }

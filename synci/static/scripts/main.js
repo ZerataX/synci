@@ -1,12 +1,13 @@
 'use strict'
+import { Session } from './model/session.js'
 import { activeUser, checkToken } from './controller/auth.js'
-import { updateSession } from './view/session.js'
+import { updateSession } from './controller/session.js'
 
 const synci = {
   common: {
     async init () {
       await activeUser.loggedIn
-      const authInterval = window.setInterval(() => { checkToken() }, 60 * 1000) // eslint-disable-line no-unused-vars
+      const authInterval = window.setInterval(() => { checkToken() }, 3 * 60 * 1000) // eslint-disable-line no-unused-vars
       console.log(`logged in as ${activeUser.username}`)
     }
   },
@@ -16,9 +17,11 @@ const synci = {
     }
   },
   session: {
-    'name': window.location.pathname.replace('/session/', '').replace('/', ''),
+    name: window.location.pathname.replace('/session/', '').replace('/', ''),
     async init () {
-      const SessionInterval = window.setInterval(() => { updateSession(synci.session.name, activeUser) }, 1000) // eslint-disable-line no-unused-vars
+      const activeSession = new Session(synci.session.name, activeUser.accessToken)
+      const SessionInterval = window.setInterval(() => { updateSession(activeSession, activeUser) }, 10 * 1000) // eslint-disable-line no-unused-vars
+      updateSession(activeSession, activeUser)
     }
   }
 }
@@ -26,7 +29,7 @@ const synci = {
 // based on https://www.viget.com/articles/extending-paul-irishs-comprehensive-dom-ready-execution/
 const UTIL = {
   async exec (controller, action) {
-    let ns = synci
+    const ns = synci
 
     action = (action === undefined) ? 'init' : action
     if (controller !== '' && ns[controller] && typeof ns[controller][action] === 'function') {
@@ -34,11 +37,11 @@ const UTIL = {
     }
   },
   async init () {
-    let body = document.body
+    const body = document.body
 
-    let controller = body.getAttribute('data-controller')
+    const controller = body.getAttribute('data-controller')
 
-    let action = body.getAttribute('data-action')
+    const action = body.getAttribute('data-action')
     await UTIL.exec('common')
     await UTIL.exec(controller)
     await UTIL.exec(controller, action)

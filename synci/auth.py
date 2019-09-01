@@ -3,7 +3,7 @@ import urllib.parse
 import random
 
 from flask import (
-    abort, Blueprint, flash, g, redirect, request, session,
+    app, abort, Blueprint, flash, g, redirect, request, session,
     url_for, current_app
 )
 
@@ -37,8 +37,12 @@ def callback():
         abort(500)
 
     session["user_id"] = random.getrandbits(128)
+
     # redirect to last visited page (check cookie)
-    response = redirect(url_for("index"))
+    if "last_page"  in request.cookies:
+        response = redirect(request.cookies["last_page"])
+    else:
+        response = redirect(url_for("index"))
     response.set_cookie('user_id', str(session["user_id"]))
 
     return response
@@ -53,7 +57,9 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if "user_id" not in session:
-            return redirect(url_for("auth.login"))
+            response = redirect(url_for("auth.login"))
+            response.set_cookie("last_page", request.url)
+            return response
 
         return view(**kwargs)
 
