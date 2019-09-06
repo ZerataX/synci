@@ -6,6 +6,7 @@ node_modules/
 .vscode/
 
 # dist
+*-css.js
 *.css
 
 # Byte-compiled / optimized / DLL files

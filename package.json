@@ -1,0 +1,61 @@
+{
+  "name": "synci",
+  "version": "0.0.1",
+  "contributors": [
+    "Jona Abdinghoff (ZerataX)"
+  ],
+  "license": "Unlicense",
+  "repository": "ZerataX/synci",
+  "homepage": "https://syn.ci",
+  "scripts": {
+    "start": "polymer serve -p 8095",
+    "live": "polymer serve -p 8095 & browser-sync start --proxy 'localhost:8095' --port 8096 --ui-port 8097 --files 'index.html, src/**/*.js, images/*'",
+    "build": "npm run prepare && polymer build --auto-base-path && gulp prpl-server",
+    "build:static": "npm run prepare && polymer build",
+    "watch": "npm run watch:styling",
+    "watch:styling": "nodemon -e scss -x \"npm run preapre:styling\"",
+    "prepare": "npm run prepare:styling",
+    "prepare:styling": "./scripts/build-styling.sh",
+    "serve": "prpl-server --root server/build --port 8093",
+    "serve:static": "polymer serve --port 5000 build/esm-bundled",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:integration": "mocha test/integration --timeout=10000",
+    "test:unit": "polymer test --module-resolution=node --npm",
+    "test:sauce": "polymer test --module-resolution=node --npm -s 'windows 10/microsoftedge@17' -s 'macos 10.13/safari@11'",
+    "test:regenerate_screenshots": "mocha test/integration/screenshots-baseline/regenerate.js --timeout=15000"
+  },
+  "dependencies": {
+    "@polymer/app-layout": "^3.0.0",
+    "@polymer/polymer": "^3.1.0",
+    "@webcomponents/webcomponentsjs": "^2.2.4",
+    "lit-element": "^2.0.1",
+    "pwa-helpers": "^0.9.0",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
+  },
+  "devDependencies": {
+    "@polymer/test-fixture": "^4.0.2",
+    "axe-core": "^3.0.0",
+    "browser-sync": "^2.26.7",
+    "chai": "^4.1.2",
+    "del": "^3.0.0",
+    "extract-loader": "^3.1.0",
+    "gulp": "^4.0.0",
+    "gulp-real-favicon": "^0.3.2",
+    "gulp-rename": "^1.3.0",
+    "gulp-replace": "^1.0.0",
+    "lit-scss-loader": "^1.0.0",
+    "mocha": "^5.2.0",
+    "node-sass-import": "^2.0.1",
+    "nodemon": "^1.19.2",
+    "nodesass": "0.0.2-security",
+    "pixelmatch": "^4.0.2",
+    "polymer-cli": "^1.9.11",
+    "polyserve": "^0.27.0",
+    "prpl-server": "^1.4.0",
+    "puppeteer": "^1.5.0",
+    "sass": "^1.23.0-module.beta.1",
+    "wct-mocha": "^1.0.1"
+  }
+}
