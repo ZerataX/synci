@@ -5,9 +5,9 @@
     "images/**/*"
   ],
   "extraDependencies": [
-    "images/manifest/site.webmanifest",
     "node_modules/@webcomponents/webcomponentsjs/**",
-    "push-manifest.json"
+    "push-manifest.json",
+    "404.html"
   ],
   "builds": [
     {
