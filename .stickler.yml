@@ -1,0 +1,12 @@
+linters:
+  sasslint:
+    config: .sasslintrc
+    ignore: vendor/*.scss
+  eslint:
+    config: .eslintrc
+  shellcheck:
+    shell: bash
+files:
+  ignore:
+    - 'build/*'
+    - 'node_modules/*'
