@@ -5,7 +5,7 @@
 
     --app-primary-color: #E91E63;
     --app-secondary-color: #293237;
-    --app-dark-text-color: var(--app-secondary-color);
+                      --app-dark-text-color: var(--app-secondary-color);
     --app-light-text-color: white;
     --app-section-even-color: #f7f7f7;
     --app-section-odd-color: white;
@@ -27,7 +27,7 @@
     text-align: center;
     background-color: var(--app-header-background-color);
     color: var(--app-header-text-color);
-    border-bottom: 1px solid #eee;
+    border-bottom:    1px solid #eee;
   }
 
   .toolbar-top {
