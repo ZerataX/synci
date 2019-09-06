@@ -1,0 +1,4 @@
+{
+  "plugins": ["lit"]
+  "extends": "standard"
+}

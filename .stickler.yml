@@ -1,6 +1,9 @@
 linters:
-  sass-lint: { }
-  eslint: { }
+  sasslint:
+    config: .sasslintrc
+    ignore: vendor/*.scss
+  eslint:
+    config: .eslintrc
   shellcheck:
     shell: bash
 files:
