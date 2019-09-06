@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -e
 
 sassfiles=(`find src/components/ -name "*.scss"`)
