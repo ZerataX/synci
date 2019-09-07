@@ -53,6 +53,7 @@ class SynciApp extends connect(store)(LitElement) {
         <!-- This gets hidden on a small screen-->
         <nav class="toolbar-list">
           <a ?selected="${this._page === 'index'}" href="index">Index</a>
+          <a ?selected="${this._page === 'session'}" href="session">Session</a>
         </nav>
       </app-header>
 
@@ -62,12 +63,14 @@ class SynciApp extends connect(store)(LitElement) {
           @opened-changed="${this._drawerOpenedChanged}">
         <nav class="drawer-list">
           <a ?selected="${this._page === 'index'}" href="index">Index</a>
+          <a ?selected="${this._page === 'session'}" href="session">Session</a>
         </nav>
       </app-drawer>
 
       <!-- Main content -->
       <main role="main" class="main-content">
         <synci-index class="page" ?active="${this._page === 'index'}"></synci-index>
+        <synci-session class="page" ?active="${this._page === 'session'}"></synci-session>
         <synci-view404 class="page" ?active="${this._page === 'view404'}"></synci-view404>
       </main>
 

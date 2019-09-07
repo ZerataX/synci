@@ -23,6 +23,9 @@ const loadPage = (page) => (dispatch) => {
       import('../components/views/synci-index.js').then((module) => {
       })
       break
+    case 'session':
+      import('../components/views/synci-session.js')
+      break
     default:
       page = 'view404'
       import('../components/views/synci-view404.js')
