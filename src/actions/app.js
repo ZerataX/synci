@@ -5,9 +5,15 @@ export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
 
 export const navigate = (path) => (dispatch) => {
-  // adjust for non root paths, e.g. if hosted on ipfs
-  const baseURI = document.baseURI.replace(`${window.location.protocol}//${window.location.host}`, '')
-  path = path.replace(baseURI, '')
+  // adjust for ipfs
+  const dir = path.split('/')[1]
+  if (dir === 'ipfs' || dir === 'ipns') {
+    const baseURI = document.baseURI.replace(`${window.location.protocol}//${window.location.host}`, '')
+    path = path.replace(baseURI, '')
+  }
+  if (path.startsWith('/')) {
+    path = path.substring(1)
+  }
 
   const page = path || 'index'
 
