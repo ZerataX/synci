@@ -1,3 +1,0 @@
-files:
-  include:
-    - 'src/**/*.s+(a|c)ss'

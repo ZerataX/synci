@@ -52,7 +52,7 @@ class SynciApp extends connect(store)(LitElement) {
 
         <!-- This gets hidden on a small screen-->
         <nav class="toolbar-list">
-          <a ?selected="${this._page === 'index'}" href="/index">Index</a>
+          <a ?selected="${this._page === 'index'}" href="index">Index</a>
         </nav>
       </app-header>
 
@@ -61,7 +61,7 @@ class SynciApp extends connect(store)(LitElement) {
           .opened="${this._drawerOpened}"
           @opened-changed="${this._drawerOpenedChanged}">
         <nav class="drawer-list">
-          <a ?selected="${this._page === 'index'}" href="/index">Index</a>
+          <a ?selected="${this._page === 'index'}" href="index">Index</a>
         </nav>
       </app-drawer>
 
@@ -72,7 +72,7 @@ class SynciApp extends connect(store)(LitElement) {
       </main>
 
       <footer>
-        <p>Made with &hearts by the <a href='https://dmnd.sh/' >DMND</a> team.</p>
+        <p>Made with &hearts by the <a href='https://dmnd.sh/'>DMND</a> team.</p>
       </footer>
 
       <snack-bar ?active="${this._snackbarOpened}">

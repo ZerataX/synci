@@ -5,7 +5,11 @@ export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
 
 export const navigate = (path) => (dispatch) => {
-  const page = path === '/' ? 'index' : path.slice(1)
+  // adjust for non root paths, e.g. if hosted on ipfs
+  const baseURI = document.baseURI.replace(`${window.location.protocol}//${window.location.host}`, '')
+  path = path.replace(baseURI, '')
+
+  const page = path || 'index'
 
   dispatch(loadPage(page))
 
@@ -23,9 +27,9 @@ const loadPage = (page) => (dispatch) => {
       page = 'view404'
       import('../components/views/synci-view404.js')
   }
+  /* eslint-enable no-unused-expressions */
 
   dispatch(updatePage(page))
-  /* eslint-enable no-unused-expressions */
 }
 
 const updatePage = (page) => {
