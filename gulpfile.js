@@ -12,6 +12,8 @@ gulp.task('prpl-server:clean', () => {
 gulp.task('prpl-server:build', () => {
   const pattern = 'node_modules'
   const replacement = 'node_assets'
+  const relhref = /href=(['"])([^/])/g
+  const abshref = 'href=$1/$2'
 
   return gulp.src('build/**')
     .pipe(rename((path) => {
@@ -19,6 +21,7 @@ gulp.task('prpl-server:build', () => {
       path.dirname = path.dirname.replace(pattern, replacement)
     }))
     .pipe(replace(pattern, replacement))
+    .pipe(replace(relhref, abshref))
     .pipe(gulp.dest('server/build'))
 })
 

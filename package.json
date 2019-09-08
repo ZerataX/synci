@@ -19,7 +19,7 @@
     "watch:styling": "nodemon -e scss -x \"npm run prepare:styling\"",
     "prepare": "npm run prepare:styling",
     "prepare:styling": "./scripts/build-styling.sh",
-    "serve": "prpl-server --root server/build --port 8093",
+    "serve": "prpl-server --root server/build --port 8096",
     "serve:static": "polymer serve --port 5000 build/esm-bundled",
     "publish": "./scripts/publish-ipfs.sh",
     "test": "npm run lint && npm run test:unit && npm run test:integration",

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 host="http://localhost:8081/"
 base_url="ipns/syn.ci/"
 
