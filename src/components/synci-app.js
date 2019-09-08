@@ -54,6 +54,7 @@ class SynciApp extends connect(store)(LitElement) {
         <nav class="toolbar-list">
           <a ?selected="${this._page === 'index'}" href="index">Index</a>
           <a ?selected="${this._page === 'session'}" href="session">Session</a>
+          <a ?selected="${this._page === 'settings'}" href="settings">Settings</a>
         </nav>
       </app-header>
 
@@ -64,6 +65,7 @@ class SynciApp extends connect(store)(LitElement) {
         <nav class="drawer-list">
           <a ?selected="${this._page === 'index'}" href="index">Index</a>
           <a ?selected="${this._page === 'session'}" href="session">Session</a>
+          <a ?selected="${this._page === 'settings'}" href="settings">Settings</a>
         </nav>
       </app-drawer>
 
@@ -71,6 +73,8 @@ class SynciApp extends connect(store)(LitElement) {
       <main role="main" class="main-content">
         <synci-index class="page" ?active="${this._page === 'index'}"></synci-index>
         <synci-session class="page" ?active="${this._page === 'session'}"></synci-session>
+        <synci-settings class="page" ?active="${this._page === 'settings'}"></synci-settings>
+        <synci-callback class="page" ?active="${this._page === 'callback'}"></synci-callback>
         <synci-view404 class="page" ?active="${this._page === 'view404'}"></synci-view404>
       </main>
 

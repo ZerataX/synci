@@ -1,4 +1,5 @@
 export const UPDATE_PAGE = 'UPDATE_PAGE'
+export const UPDATE_ITEM = 'UPDATE_ITEM'
 export const UPDATE_OFFLINE = 'UPDATE_OFFLINE'
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE'
 export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
@@ -15,14 +16,13 @@ export const navigate = (path) => (dispatch) => {
     path = path.substring(1)
   }
 
-  const page = path || 'index'
-
-  dispatch(loadPage(page))
+  dispatch(loadPage(path || 'index'))
 
   dispatch(updateDrawerState(false))
 }
 
-const loadPage = (page) => (dispatch) => {
+const loadPage = (path) => (dispatch) => {
+  let [page, item] = path.split('/')
   /* eslint-disable no-unused-expressions */
   switch (page) {
     case 'index':
@@ -32,6 +32,12 @@ const loadPage = (page) => (dispatch) => {
     case 'session':
       import('../components/views/synci-session.js')
       break
+    case 'settings':
+      import('../components/views/synci-settings.js')
+      break
+    case 'callback':
+      import('../components/views/synci-callback.js')
+      break
     default:
       page = 'view404'
       import('../components/views/synci-view404.js')
@@ -39,12 +45,27 @@ const loadPage = (page) => (dispatch) => {
   /* eslint-enable no-unused-expressions */
 
   dispatch(updatePage(page))
+  dispatch(updateItem(item))
 }
 
 const updatePage = (page) => {
   return {
     type: UPDATE_PAGE,
     page
+  }
+}
+
+const updateItem = (item) => {
+  return {
+    type: UPDATE_ITEM,
+    item
+  }
+}
+
+export const updateDrawerState = (opened) => {
+  return {
+    type: UPDATE_DRAWER_STATE,
+    opened
   }
 }
 
@@ -67,11 +88,4 @@ export const updateOffline = (offline) => (dispatch, getState) => {
     type: UPDATE_OFFLINE,
     offline
   })
-}
-
-export const updateDrawerState = (opened) => {
-  return {
-    type: UPDATE_DRAWER_STATE,
-    opened
-  }
 }

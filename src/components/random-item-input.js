@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit-element'
 
-import { SharedStyles } from './shared-styles.js'
+import { style as SharedStyles } from './shared-styles-css.js'
 
 class RandomItemInput extends LitElement {
   static get properties () {

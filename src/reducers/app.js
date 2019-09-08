@@ -1,5 +1,6 @@
 import {
   UPDATE_PAGE,
+  UPDATE_ITEM,
   UPDATE_OFFLINE,
   OPEN_SNACKBAR,
   CLOSE_SNACKBAR,
@@ -8,6 +9,7 @@ import {
 
 const INITIAL_STATE = {
   page: '',
+  item: '',
   offline: false,
   drawerOpened: false,
   snackbarOpened: false
@@ -19,6 +21,11 @@ const app = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         page: action.page
+      }
+    case UPDATE_ITEM:
+      return {
+        ...state,
+        item: action.item
       }
     case UPDATE_OFFLINE:
       return {
