@@ -6,3 +6,13 @@ export const createPopUp = (url, windowName, height = 800, width = 400) => {
   if (window.focus) { newwindow.focus() }
   return newwindow
 }
+
+export function getBaseUrl () {
+  const dir = window.location.pathname.split('/')[1]
+  // handle ipfs callback seperately
+  if (dir === 'ipfs' || dir === 'ipns') {
+    return window.encodeURI(`${document.baseURI}`)
+  }
+
+  return window.encodeURI(`${window.location.protocol}//${window.location.host}/`)
+}

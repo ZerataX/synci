@@ -2,7 +2,7 @@ import { html } from 'lit-element'
 import { PageViewElement } from '../page-view-element.js'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 import { SPOTIFY_CLIENT_ID } from '../../../config.js'
-import { createPopUp } from '../../util.js'
+import { getBaseUrl, createPopUp } from '../../util.js'
 
 // This element is connected to the Redux store.
 import { store } from '../../store.js'
@@ -132,7 +132,7 @@ class SynciSession extends connect(store)(PageViewElement) {
     if (!session.name && this._name) {
       modal.open()
     } else if (session.name) {
-      window.history.replaceState({}, '', `session/${session.name}`)
+      window.history.replaceState({}, '', `${getBaseUrl}session/${session.name}`)
     }
   }
 
@@ -196,15 +196,7 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   authSpotify () {
-    const dir = window.location.pathname.split('/')[1]
-    let callbackUrl = ''
-    // handle ipfs callback seperately
-    if (dir === 'ipfs' || dir === 'ipns') {
-      callbackUrl = window.encodeURI(`${document.baseURI}callback/spotify`)
-    } else {
-      callbackUrl = window.encodeURI(`${window.location.host}/callback/spotify`)
-    }
-
+    const callbackUrl = `${getBaseUrl}callback/spotify`
     const scopes = window.encodeURI('user-read-playback-state user-modify-playback-state user-read-email')
     const state = this.createState()
     const authURL = 'https://accounts.spotify.com/authorize' +
