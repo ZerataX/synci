@@ -7,7 +7,7 @@ export const createPopUp = (url, windowName, height = 800, width = 400) => {
   return newwindow
 }
 
-export function getBaseUrl () {
+export const getBaseUrl = () => {
   const dir = window.location.pathname.split('/')[1]
   // handle ipfs callback seperately
   if (dir === 'ipfs' || dir === 'ipns') {
