@@ -14,7 +14,8 @@ gulp.task('prpl-server:build', () => {
   const replacement = 'node_assets'
   const relhref = /href=(['"])([^/])/g
   const abshref = 'href=$1/$2'
-
+  const relhist = /window\.history\.(place|replace)State\((.+?[`'"]).*([`'"]), ([`'"])([^\/])/g
+  const abshist = 'window.history.$1State($2$3, $4/$5'
   return gulp.src('build/**')
     .pipe(rename((path) => {
       path.basename = path.basename.replace(pattern, replacement)
@@ -22,6 +23,7 @@ gulp.task('prpl-server:build', () => {
     }))
     .pipe(replace(pattern, replacement))
     .pipe(replace(relhref, abshref))
+    .pipe(replace(relhist, abshist))
     .pipe(gulp.dest('server/build'))
 })
 

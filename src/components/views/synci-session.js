@@ -196,7 +196,15 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   authSpotify () {
-    const callbackUrl = window.encodeURI(`${document.baseURI}callback/spotify`)
+    const dir = window.location.pathname.split('/')[1]
+    let callbackUrl = ''
+    // handle ipfs callback seperately
+    if (dir === 'ipfs' || dir === 'ipns') {
+      callbackUrl = window.encodeURI(`${document.baseURI}callback/spotify`)
+    } else {
+      callbackUrl = window.encodeURI(`${window.location.host}/callback/spotify`)
+    }
+
     const scopes = window.encodeURI('user-read-playback-state user-modify-playback-state user-read-email')
     const state = this.createState()
     const authURL = 'https://accounts.spotify.com/authorize' +

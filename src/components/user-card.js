@@ -7,7 +7,7 @@ import '@polymer/iron-icons/social-icons.js'
 import '@polymer/iron-image/iron-image.js'
 import '@polymer/paper-icon-button/paper-icon-button.js'
 import '@polymer/paper-card/paper-card.js'
-import '@polymer/paper-styles/element-styles/paper-material-styles.js';
+import '@polymer/paper-styles/element-styles/paper-material-styles.js'
 import '@polymer/paper-button/paper-button.js'
 import '@polymer/paper-ripple/paper-ripple.js'
 
@@ -59,11 +59,13 @@ class UserCard extends LitElement {
         }
 
         .avatar-image {
+          z-index: 2;
           position: relative;
           width: 14vh;
           height: 14vh;
         }
         .avatar-icon {
+          z-index: 2;
           position: relative;
         }
         .card-content {
@@ -87,6 +89,8 @@ class UserCard extends LitElement {
           border-radius: 50%;
         }
         paper-card {
+          z-index: 1;
+          cursor: pointer;
           display:flex;
           width: 100%;
           height: 20vh;
@@ -133,6 +137,7 @@ class UserCard extends LitElement {
           </div>
           <span>${this.label}</span>
         </div>
+        <paper-ripple></paper-ripple>
       </paper-card>
     `
   }
