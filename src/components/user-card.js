@@ -63,8 +63,8 @@ class UserCard extends LitElement {
           position: relative;
           width: 11vh;
           height: 11vh;
-          max-width: 100px;
-          max-height: 100px;
+          max-width: 80px;
+          max-height: 80px;
         }
         .avatar-icon {
           z-index: 2;
@@ -87,8 +87,8 @@ class UserCard extends LitElement {
         iron-icon {
           width: 7vh;
           height: 7vh;
-          max-width: 100px;
-          max-height: 100px;
+          max-width: 50px;
+          max-height: 50px;
           padding: 2vh;
           border-radius: 50%;
         }
@@ -98,6 +98,7 @@ class UserCard extends LitElement {
           display:flex;
           width: 100%;
           height: 20vh;
+          max-height: 110px;
           position: relative;
         }
         span {
@@ -151,7 +152,9 @@ class UserCard extends LitElement {
   }
 
   _checkLink (e) {
-    this.modal.open()
+    if (this.href) {
+      this.modal.open()
+    }
   }
 
   _openLink (e) {

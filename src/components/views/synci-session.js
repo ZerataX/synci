@@ -99,7 +99,6 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   render () {
-    console.log(`${getBaseUrl()}callback/spotify`)
     return html`
       <paper-dialog id="modal" modal>
         <h3>Choose a service</h3>

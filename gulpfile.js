@@ -12,7 +12,7 @@ gulp.task('prpl-server:clean', () => {
 gulp.task('prpl-server:build', () => {
   const pattern = 'node_modules'
   const replacement = 'node_assets'
-  const relhref = /href=(['"])(?!(https?:\/\/|\/))/g
+  const relhref = /href=(['"])(?!(https?:\/\/|images|\/))/g
   const abshref = 'href=$1/'
 
   return gulp.src('build/**')
