@@ -5,7 +5,7 @@
       "type": "script",
       "weight": 1
     },
-    "src/components/my-view1.js": {
+    "src/components/synci-index.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
@@ -53,7 +53,7 @@
       "type": "script",
       "weight": 1
     },
-    "src/components/synci-session.js": {
+    "src/components/synci-settings.js": {
       "crossorigin": "anonymous",
       "type": "script",
       "weight": 1
