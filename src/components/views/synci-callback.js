@@ -57,8 +57,8 @@ class SynciCallback extends connect(store)(PageViewElement) {
           window.alert(`state does not match ${authState} != ${params.state}`)
         } else {
           const exDate = new Date(Date.now() + parseInt(params.expires_in) * 1000)
-          window.localStorage.setItem('__synci_spotify_exdate__', params.access_token)
-          window.localStorage.setItem('__synci_spotify_token__', exDate)
+          window.localStorage.setItem('__synci_spotify_token__', params.access_token)
+          window.localStorage.setItem('__synci_spotify_exdate__', exDate)
         }
         break
       default:

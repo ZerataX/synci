@@ -17,5 +17,12 @@ export const loadState = () => {
 
   const state = JSON.parse(json)
 
+  if (state) {
+    if (window.location.hash.includes('develop')) {
+      delete state.user
+    }
+    state.user.isFetching = false
+  }
+
   return state
 }

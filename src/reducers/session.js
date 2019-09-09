@@ -3,7 +3,7 @@ import {
   REMOVE_SESSION_USER,
   ADD_SESSION_USER,
   UPDATE_SESSION_MEDIA,
-  UPDATE_SESSION,
+  CREATE_SESSION,
   LEAVE_SESSION
 } from '../actions/session.js'
 
@@ -42,7 +42,7 @@ const session = (state = INITIAL_STATE, action) => {
         time: action.time,
         duration: action.duration
       }
-    case UPDATE_SESSION:
+    case CREATE_SESSION:
       return {
         ...state,
         name: action.name,

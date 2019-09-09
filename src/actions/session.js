@@ -2,12 +2,12 @@ export const UPDATE_SESSION_HOST = 'UPDATE_SESSION_HOST'
 export const REMOVE_SESSION_USER = 'REMOVE_SESSION_USER'
 export const ADD_SESSION_USER = 'ADD_SESSION_USER'
 export const UPDATE_SESSION_MEDIA = 'UPDATE_SESSION_MEDIA'
-export const UPDATE_SESSION = 'UPDATE_SESSION'
+export const CREATE_SESSION = 'CREATE_SESSION'
 export const LEAVE_SESSION = 'LEAVE_SESSION'
 
 export const createSession = (name, host, mediaType, users = new Set(), media = {}, time = 0, duration = -1) => {
   return {
-    type: UPDATE_SESSION,
+    type: CREATE_SESSION,
     name,
     host,
     mediaType,

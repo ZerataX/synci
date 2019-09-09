@@ -2,7 +2,10 @@ import {
   UPDATE_AUTH_STATE,
   UPDATE_USER_INFO,
   UPDATE_SPOTIFY_LOGIN,
-  LOGOUT_SPOTIFY
+  LOGOUT_SPOTIFY,
+  REQUEST_USER_INFO,
+  RECEIVE_USER_INFO,
+  FAIL_USER_INFO
 } from '../actions/user.js'
 
 const ID = function () {
@@ -15,6 +18,8 @@ const INITIAL_STATE = {
   href: '',
   id: ID(),
   authState: '',
+  isFetching: false,
+  failure: false,
   spotify: {
     accessToken: '',
     expirationDate: ''
@@ -47,6 +52,27 @@ const user = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         spotify: {}
+      }
+    case REQUEST_USER_INFO:
+      return {
+        ...state,
+        isFetching: false,
+        failure: false
+      }
+    case RECEIVE_USER_INFO:
+      return {
+        ...state,
+        name: action.name,
+        image: action.image,
+        href: action.href,
+        isFetching: true,
+        failure: false
+      }
+    case FAIL_USER_INFO:
+      return {
+        ...state,
+        isFetching: false,
+        failure: true
       }
     default:
       return state

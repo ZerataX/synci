@@ -14,7 +14,8 @@ import {
 } from '../../actions/session.js'
 import {
   updateAuthState,
-  updateSpotify
+  updateSpotify,
+  fetchSpotifyUserInfo
 } from '../../actions/user.js'
 
 // These are components needed by this element
@@ -22,6 +23,9 @@ import '@polymer/paper-dialog'
 
 // These are the shared styles needed by this element.
 import { style as SharedStyles } from '../shared-styles-css.js'
+
+// These are components needed by this element
+import '../user-card.js'
 
 import app from '../../reducers/app.js'
 import session from '../../reducers/session.js'
@@ -32,15 +36,33 @@ store.addReducers({
   user
 })
 
+class User {
+  constructor (id, name, image, href) {
+    this._id = id
+    this._name = name
+    this._image = image
+    this._href = href
+  }
+
+  get id () { return this._id }
+  get name () { return this._name }
+  set name (name) { this._name = name }
+  get image () { return this._image }
+  set image (image) { this._image = image }
+  get href () { return this._href }
+  set href (href) { this._href = href }
+}
+
 class SynciSession extends connect(store)(PageViewElement) {
   static get properties () {
     return {
       _name: { type: String },
       _type: { type: String },
-      _users: { type: Array },
+      _users: { type: Set },
       _media: { type: Object },
       _time: { type: Number },
-      _duration: { type: Number }
+      _duration: { type: Number },
+      _host: { type: Object }
     }
   }
 
@@ -54,10 +76,26 @@ class SynciSession extends connect(store)(PageViewElement) {
     super()
     this._name = ''
     this._type = ''
-    this._users = [{}]
+    this._users = new Set()
     this._media = {}
     this._time = 0
     this._duration = -1
+    this._host = new User()
+  }
+
+  getUsers () {
+    const itemTemplates = [];
+    for (const i of this._users) {
+      itemTemplates.push(html`
+          <user-card
+            class="followers"
+            label="${user.name}"
+            iconSrc="${user.image}"
+            href="${user.href}"></user-card>
+        `)
+    }
+  
+    return itemTemplates
   }
 
   render () {
@@ -65,24 +103,36 @@ class SynciSession extends connect(store)(PageViewElement) {
       <paper-dialog id="modal" modal>
         <h3>Choose a service</h3>
         <div class="buttons">
-          <paper-button @click="${this._createSession}" value="spotify" dialog-confirm>Spotify</paper-button>
-          <paper-button @click="${this._createSession}" value="youtube" dialog-confirm>Youtube</paper-button>  
+          <paper-button 
+            @click="${this._createSession}"
+            value="spotify" dialog-confirm>Spotify</paper-button>
+          <paper-button
+            @click="${this._createSession}"
+            value="youtube" dialog-confirm>Youtube</paper-button>  
         </div>
         </paper-dialog>
-      <section>
+      <section class="session">
+        <div>
         <h2>${this._name || 'You\'re not part of any session'}</h2>
+        <hr>
+        <user-card
+          id="host"
+          label="${this._host.name || 'Anonymous'}"
+          iconSrc="${this._host.image || ''}"
+          href="${this._host.href || ''}"></user-card>
+        ${this.getUsers()}
+        </div>
       </section>
-     
     `
   }
 
   updated (changedProperties) {
     const modal = this.shadowRoot.getElementById('modal')
-    const session = store.getState().session
+    const session = store.getState().session // this is probably not the best way to handle this
     if (!session.name && this._name) {
       modal.open()
     } else if (session.name) {
-      window.history.replaceState({}, 'Synci - Session', `session/${session.name}`)
+      window.history.replaceState({}, '', `session/${session.name}`)
     }
   }
 
@@ -97,22 +147,15 @@ class SynciSession extends connect(store)(PageViewElement) {
       this._media = state.session.media
       this._name = state.session.name
       this._type = state.session.mediaType
-      this._users = state.session._users
+      this._users = new Set(state.session._users)
       this._time = state.session.time
       this._duration = state.session.duration
-      switch (this._type) {
-        case 'spotify':
-          if (!this.loggedIn(
-            state.user.spotify.accessToken,
-            state.user.spotify.expirationDate
-          )) {
-            this.authSpotify()
-          }
-          break
-      }
+      this._host.name = state.user.name
+      this._host.image = state.user.image
+      this._host.href = state.user.href
     } else if (state.app.item) {
       this._name = state.app.item
-      this._host = state.user.id
+      this._host = new User(state.user.id)
     }
   }
 
@@ -126,8 +169,20 @@ class SynciSession extends connect(store)(PageViewElement) {
     return randomState
   }
 
-  _createSession (e) {
+  async _createSession (e) {
     const type = e.path[0].getAttribute('value')
+    const user = store.getState().user
+    switch (type) {
+      case 'spotify':
+        if (!this.loggedIn(
+          user.spotify.accessToken,
+          new Date(user.spotify.expirationDate)
+        )) {
+          this.authSpotify()
+        }
+        store.dispatch(fetchSpotifyUserInfo())
+        break
+    }
     store.dispatch(createSession(this._name, this._host, type))
   }
 
