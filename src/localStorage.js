@@ -21,7 +21,9 @@ export const loadState = () => {
     if (window.location.hash.includes('develop')) {
       delete state.user
     }
-    state.user.isFetching = false
+    if (state.user) {
+      state.user.isFetching = false
+    }
   }
 
   return state

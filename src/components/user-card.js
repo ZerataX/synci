@@ -10,7 +10,6 @@ import '@polymer/paper-card/paper-card.js'
 import '@polymer/paper-styles/element-styles/paper-material-styles.js';
 import '@polymer/paper-button/paper-button.js'
 import '@polymer/paper-ripple/paper-ripple.js'
-import { createPopUp } from '../util.js';
 
 class UserCard extends LitElement {
   static get properties () {

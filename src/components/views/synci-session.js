@@ -84,8 +84,8 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   getUsers () {
-    const itemTemplates = [];
-    for (const i of this._users) {
+    const itemTemplates = []
+    for (const user of this._users) {
       itemTemplates.push(html`
           <user-card
             class="followers"
@@ -94,7 +94,7 @@ class SynciSession extends connect(store)(PageViewElement) {
             href="${user.href}"></user-card>
         `)
     }
-  
+
     return itemTemplates
   }
 
@@ -169,7 +169,7 @@ class SynciSession extends connect(store)(PageViewElement) {
     return randomState
   }
 
-  async _createSession (e) {
+  _createSession (e) {
     const type = e.path[0].getAttribute('value')
     const user = store.getState().user
     switch (type) {
