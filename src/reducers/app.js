@@ -6,6 +6,7 @@ import {
   CLOSE_SNACKBAR,
   OPEN_MODAL,
   CLOSE_MODAL,
+  STORAGE_AVAILABILITY,
   UPDATE_DRAWER_STATE
 } from '../actions/app.js'
 
@@ -16,6 +17,10 @@ const INITIAL_STATE = {
     id: '',
     open: false,
     props: {}
+  },
+  StorageAvailability: {
+    local: false,
+    session: false
   },
   offline: false,
   drawerOpened: false,
@@ -71,6 +76,14 @@ const app = (state = INITIAL_STATE, action) => {
           open: false,
           id: '',
           props: {}
+        }
+      }
+    case STORAGE_AVAILABILITY:
+      return {
+        ...state,
+        StorageAvailability: {
+          local: action.local,
+          session: action.session
         }
       }
     default:

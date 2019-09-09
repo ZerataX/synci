@@ -50,7 +50,7 @@ class SynciCallback extends connect(store)(PageViewElement) {
     }
 
     const type = state.app.item
-    const authState = state.user.authState
+    const authState = window.localStorage.getItem('__synci_spotify_state__')
     switch (type) {
       case 'spotify':
         if (authState !== params.state) {

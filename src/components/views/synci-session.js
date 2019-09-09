@@ -260,16 +260,19 @@ class SynciSession extends connect(store)(PageViewElement) {
       `&scope=${scopes}` +
       `&state=${state}&response_type=token`
 
+    store.dispatch(updateAuthState(state))
+    window.localStorage.setItem('__synci_spotify_state__', state)
     return new Promise((resolve, reject) => {
-      store.dispatch(updateAuthState(state))
-
       const popup = createPopUp(authURL, 'spotify login')
-      window.addEventListener('storage', () => {
+      window.addEventListener('storage', (e) => {
+        console.log(e)
+        if (e.key !== '__synci_spotify_exdate__')
+          return
         const exdate = window.localStorage.getItem('__synci_spotify_exdate__')
         const token = window.localStorage.getItem('__synci_spotify_token__')
         store.dispatch(updateSpotify(token, exdate))
         store.dispatch(updateAuthState(''))
-
+        
         popup.close()
         resolve()
       }, false)

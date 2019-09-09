@@ -6,6 +6,7 @@ export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
+export const STORAGE_AVAILABILITY = 'STORAGE_AVAILABILITY'
 
 export const navigate = (path) => (dispatch) => {
   // adjust for ipfs
@@ -82,6 +83,14 @@ export const openModal = (id, props = {}) => {
 export const closeModal = () => {
   return {
     type: CLOSE_MODAL
+  }
+}
+
+export const checkStorageAvailability = (local, session) => {
+  return {
+    type: STORAGE_AVAILABILITY,
+    local,
+    session
   }
 }
 

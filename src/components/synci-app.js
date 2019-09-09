@@ -5,6 +5,7 @@ import { installMediaQueryWatcher } from 'pwa-helpers/media-query.js'
 import { installOfflineWatcher } from 'pwa-helpers/network.js'
 import { installRouter } from 'pwa-helpers/router.js'
 import { updateMetadata } from 'pwa-helpers/metadata.js'
+import { storageAvailable } from '../util.js'
 
 // This element is connected to the Redux store.
 import { store } from '../store.js'
@@ -13,7 +14,8 @@ import { store } from '../store.js'
 import {
   navigate,
   updateOffline,
-  updateDrawerState
+  updateDrawerState,
+  checkStorageAvailability
 } from '../actions/app.js'
 
 // These are the elements needed by this element.
@@ -96,6 +98,10 @@ class SynciApp extends connect(store)(LitElement) {
   }
 
   firstUpdated () {
+    store.dispatch(checkStorageAvailability(
+      storageAvailable('localStorage'),
+      storageAvailable('sessionStorage')
+    ))
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname))))
     installOfflineWatcher((offline) => store.dispatch(updateOffline(offline)))
     installMediaQueryWatcher('(min-width: 460px)',
