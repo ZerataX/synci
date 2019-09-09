@@ -29,6 +29,8 @@
     "test:regenerate_screenshots": "mocha test/integration/screenshots-baseline/regenerate.js --timeout=15000"
   },
   "dependencies": {
+    "@github/markdown-toolbar-element": "^1.0.6",
+    "@kuscamara/code-sample": "^3.0.2",
     "@material/fab": "^3.1.0",
     "@material/icon-button": "^3.1.0",
     "@material/ripple": "^3.1.0",
@@ -40,8 +42,10 @@
     "@polymer/paper-card": "^3.0.1",
     "@polymer/paper-dialog": "^3.0.1",
     "@polymer/paper-icon-button": "^3.0.2",
+    "@polymer/paper-input": "^3.0.2",
     "@polymer/paper-material": "^3.0.1",
     "@polymer/paper-ripple": "^3.0.1",
+    "@polymer/paper-slider": "^3.0.1",
     "@polymer/paper-styles": "^3.0.1",
     "@polymer/polymer": "^3.1.0",
     "@webcomponents/webcomponentsjs": "^2.2.4",

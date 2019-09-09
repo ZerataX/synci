@@ -81,6 +81,8 @@ class SynciSession extends connect(store)(PageViewElement) {
     this._time = 0
     this._duration = -1
     this._host = new User()
+    this._isAuth = false
+    this.modal = null
   }
 
   getUsers () {
@@ -104,9 +106,11 @@ class SynciSession extends connect(store)(PageViewElement) {
         <h3>Choose a service</h3>
         <div class="buttons">
           <paper-button 
+            ?disabled="${this._isAuth}"
             @click="${this._createSession}"
             value="spotify" dialog-confirm>Spotify</paper-button>
           <paper-button
+            ?disabled="${this._isAuth}"
             @click="${this._createSession}"
             value="youtube" dialog-confirm>Youtube</paper-button>  
         </div>
@@ -127,10 +131,10 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   updated (changedProperties) {
-    const modal = this.shadowRoot.getElementById('modal')
+    this.modal = this.shadowRoot.getElementById('modal')
     const session = store.getState().session // this is probably not the best way to handle this
     if (!session.name && this._name) {
-      modal.open()
+      this.modal.open() // should probably be an action?
     } else if (session.name) {
       window.history.replaceState({}, '', `${getBaseUrl()}session/${session.name}`)
     }
@@ -169,21 +173,25 @@ class SynciSession extends connect(store)(PageViewElement) {
     return randomState
   }
 
-  _createSession (e) {
-    const type = e.path[0].getAttribute('value')
+  async _createSession (e) {
+    const type = e.target.getAttribute('value')
     const user = store.getState().user
+    this._isAuth = true
+    console.debug(e.target)
     switch (type) {
       case 'spotify':
         if (!this.loggedIn(
           user.spotify.accessToken,
           new Date(user.spotify.expirationDate)
         )) {
-          this.authSpotify()
+          await this.authSpotify()
         }
         store.dispatch(fetchSpotifyUserInfo())
         break
     }
     store.dispatch(createSession(this._name, this._host, type))
+    this._isAuth = false
+    this.modal.close()
   }
 
   loggedIn (accessToken, expirationDate) {
@@ -204,17 +212,21 @@ class SynciSession extends connect(store)(PageViewElement) {
       `&redirect_uri=${callbackUrl}` +
       `&scope=${scopes}` +
       `&state=${state}&response_type=token`
-    store.dispatch(updateAuthState(state))
 
-    const popup = createPopUp(authURL, 'spotify login')
-    window.addEventListener('storage', () => {
-      const exdate = window.localStorage.getItem('__synci_spotify_exdate__')
-      const token = window.localStorage.getItem('__synci_spotify_token__')
-      store.dispatch(updateSpotify(token, exdate))
-      store.dispatch(updateAuthState(''))
+    return new Promise((resolve, reject) => {
+      store.dispatch(updateAuthState(state))
 
-      popup.close()
-    }, false)
+      const popup = createPopUp(authURL, 'spotify login')
+      window.addEventListener('storage', () => {
+        const exdate = window.localStorage.getItem('__synci_spotify_exdate__')
+        const token = window.localStorage.getItem('__synci_spotify_token__')
+        store.dispatch(updateSpotify(token, exdate))
+        store.dispatch(updateAuthState(''))
+
+        popup.close()
+        resolve()
+      }, false)
+    })
   }
 }
 

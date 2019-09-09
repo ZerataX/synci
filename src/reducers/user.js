@@ -1,6 +1,7 @@
 import {
   UPDATE_AUTH_STATE,
   UPDATE_USER_INFO,
+  RESET_USER_INFO,
   UPDATE_SPOTIFY_LOGIN,
   LOGOUT_SPOTIFY,
   REQUEST_USER_INFO,
@@ -16,6 +17,8 @@ const INITIAL_STATE = {
   name: '',
   image: '',
   href: '',
+  volume: 20,
+  overwrite: false,
   id: ID(),
   authState: '',
   isFetching: false,
@@ -36,9 +39,20 @@ const user = (state = INITIAL_STATE, action) => {
     case UPDATE_USER_INFO:
       return {
         ...state,
-        name: action.name,
-        image: action.image,
-        href: action.href
+        name: (action.overwrite || !state.name) ? action.name : state.name,
+        image: (action.overwrite || !state.image) ? action.image : state.image,
+        href: (action.overwrite || !state.href) ? action.href : state.href,
+        volume: (action.overwrite || !state.volume) ? action.volume : state.volume,
+        overwrite: action.overwrite
+      }
+    case RESET_USER_INFO:
+      return {
+        ...state,
+        name: '',
+        image: '',
+        href: '',
+        volume: 20,
+        overwrite: false
       }
     case UPDATE_SPOTIFY_LOGIN:
       return {

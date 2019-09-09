@@ -23,6 +23,7 @@ export const loadState = () => {
     }
     if (state.user) {
       state.user.isFetching = false
+      state.user.failure = false
     }
   }
 

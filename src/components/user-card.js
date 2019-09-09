@@ -59,7 +59,7 @@ class UserCard extends LitElement {
         }
 
         .avatar-image {
-          z-index: 2;
+          z-index: 1;
           position: relative;
           width: 11vh;
           height: 11vh;
@@ -67,7 +67,7 @@ class UserCard extends LitElement {
           max-height: 80px;
         }
         .avatar-icon {
-          z-index: 2;
+          z-index: 1;
           position: relative;
         }
         .card-content {
@@ -75,10 +75,20 @@ class UserCard extends LitElement {
           justify-content:center;
           align-items:center;
         }
+
+        paper-card {
+          z-index: 0;
+          cursor: pointer;
+          display:flex;
+          width: 100%;
+          height: 20vh;
+          max-height: 110px;
+          position: relative;
+        }
         iron-image {
           width: 100%;
           height: 100%;
-          background: #ddd;
+          background: var(--app-secondary-color);
           --iron-image-placeholder: {
             background: var(--app-primary-color);
           };
@@ -91,22 +101,15 @@ class UserCard extends LitElement {
           max-height: 50px;
           padding: 2vh;
           border-radius: 50%;
-        }
-        paper-card {
-          z-index: 1;
-          cursor: pointer;
-          display:flex;
-          width: 100%;
-          height: 20vh;
-          max-height: 110px;
-          position: relative;
+          --paper-icon-button-ink-color: var(--app-secondary-color);
+          background-color: var(--app-primary-color);
+          color: white;
         }
         span {
           margin-left: 30px;
           font-size: 1.3em;
         }
         </style>
-        
       </custom-style>
 
       <paper-dialog id="modal">
@@ -118,18 +121,19 @@ class UserCard extends LitElement {
         </div>
       </paper-dialog>
 
-      <paper-card @click="${this._checkLink}">
+      <paper-card>
         <div class="card-content">
-          <div class="avatar-icon">
+          <div class="avatar-icon" @click="${this._checkLink}">
           <iron-icon
             elevation="2"
-              ?hidden=${!!(this.iconSrc)}
-              id="icon"
-              tabindex="1"
-              icon="${this.icon}"></iron-icon>
+            ?hidden=${!!(this.iconSrc)}
+            id="icon"
+            tabindex="1"
+            icon="${this.icon}">
+          </iron-icon>
               <paper-ripple class="circle" recenters></paper-ripple>
           </div>
-          <div ?hidden=${!(this.iconSrc)} class="avatar-image">
+          <div ?hidden=${!(this.iconSrc)} class="avatar-image" @click="${this._checkLink}">
             <iron-image
               elevation="2"
               preload
@@ -137,10 +141,10 @@ class UserCard extends LitElement {
               alt="avatar"
               src="${this.iconSrc}"
               sizing="${this.sizing}">
-              </iron-image>
-              <paper-ripple class="circle" recenters></paper-ripple>
+            </iron-image>
+            <paper-ripple class="circle" recenters></paper-ripple>
           </div>
-          <span>${this.label}</span>
+          <span @click="${this._checkLink}">${this.label}</span>
         </div>
         <paper-ripple></paper-ripple>
       </paper-card>

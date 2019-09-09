@@ -1,5 +1,6 @@
 export const UPDATE_AUTH_STATE = 'UPDATE_AUTH_STATE'
 export const UPDATE_USER_INFO = 'UPDATE_USER_INFO'
+export const RESET_USER_INFO = 'RESET_USER_INFO'
 export const UPDATE_SPOTIFY_LOGIN = 'UPDATE_SPOTIFY_LOGIN'
 export const LOGOUT_SPOTIFY = 'LOGOUT_SPOTIFY'
 export const REQUEST_USER_INFO = 'REQUEST_USER_INFO'
@@ -15,12 +16,20 @@ export const updateAuthState = (authState) => {
   }
 }
 
-export const updateUserInfo = (name, image = '', href = '') => {
+export const updateUserInfo = (name, image = '', href = '', volume = 20, overwrite = false) => {
   return {
     type: UPDATE_USER_INFO,
     name,
     image,
-    href
+    href,
+    volume,
+    overwrite
+  }
+}
+
+export const resetUserInfo = () => {
+  return {
+    type: RESET_USER_INFO
   }
 }
 
