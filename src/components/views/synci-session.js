@@ -132,7 +132,7 @@ class SynciSession extends connect(store)(PageViewElement) {
     if (!session.name && this._name) {
       modal.open()
     } else if (session.name) {
-      window.history.replaceState({}, '', `${getBaseUrl}session/${session.name}`)
+      window.history.replaceState({}, '', `${getBaseUrl()}session/${session.name}`)
     }
   }
 
@@ -196,7 +196,7 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   authSpotify () {
-    const callbackUrl = `${getBaseUrl}callback/spotify`
+    const callbackUrl = `${getBaseUrl()}callback/spotify`
     const scopes = window.encodeURI('user-read-playback-state user-modify-playback-state user-read-email')
     const state = this.createState()
     const authURL = 'https://accounts.spotify.com/authorize' +

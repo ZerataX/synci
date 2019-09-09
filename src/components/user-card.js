@@ -61,8 +61,8 @@ class UserCard extends LitElement {
         .avatar-image {
           z-index: 2;
           position: relative;
-          width: 14vh;
-          height: 14vh;
+          width: 11vh;
+          height: 11vh;
         }
         .avatar-icon {
           z-index: 2;
@@ -83,8 +83,8 @@ class UserCard extends LitElement {
           border-radius: 50%;
         }
         iron-icon {
-          width: 10vh;
-          height: 10vh;
+          width: 7vh;
+          height: 7vh;
           padding: 2vh;
           border-radius: 50%;
         }
@@ -97,7 +97,7 @@ class UserCard extends LitElement {
           position: relative;
         }
         span {
-          margin-left: 10vh;
+          margin-left: -50%;
           font-size: 1.3em;
         }
         </style>
