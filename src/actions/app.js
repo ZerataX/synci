@@ -4,6 +4,8 @@ export const UPDATE_OFFLINE = 'UPDATE_OFFLINE'
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE'
 export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
+export const OPEN_MODAL = 'OPEN_MODAL'
+export const CLOSE_MODAL = 'CLOSE_MODAL'
 
 export const navigate = (path) => (dispatch) => {
   // adjust for ipfs
@@ -66,6 +68,20 @@ export const updateDrawerState = (opened) => {
   return {
     type: UPDATE_DRAWER_STATE,
     opened
+  }
+}
+
+export const openModal = (id, props = {}) => {
+  return {
+    type: OPEN_MODAL,
+    id,
+    props
+  }
+}
+
+export const closeModal = () => {
+  return {
+    type: CLOSE_MODAL
   }
 }
 

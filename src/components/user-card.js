@@ -35,7 +35,6 @@ class UserCard extends LitElement {
     this.label = ''
     this.href = ''
     this.sizing = 'contain'
-    this.modal = null
   }
 
   render () {
@@ -106,20 +105,11 @@ class UserCard extends LitElement {
           color: white;
         }
         span {
-          margin-left: 30px;
+          padding-left: 10%;
           font-size: 1.3em;
         }
         </style>
       </custom-style>
-
-      <paper-dialog id="modal">
-        <h2>Open User Profile</h2>
-        <p>This will open a window to an external site.</p>
-        <div class="buttons">
-          <paper-button dialog-dismiss>Decline</paper-button>
-          <paper-button @click="${this._openLink}" dialog-confirm autofocus>Accept</paper-button>
-        </div>
-      </paper-dialog>
 
       <paper-card>
         <div class="card-content">
@@ -151,18 +141,18 @@ class UserCard extends LitElement {
     `
   }
 
-  firstUpdated () {
-    this.modal = this.shadowRoot.getElementById('modal')
-  }
-
   _checkLink (e) {
     if (this.href) {
-      this.modal.open()
+      this.dispatchEvent(
+        new window.CustomEvent(
+          'link-opened', {
+            detail: { href: this.href },
+            bubbles: true,
+            composed: true
+          }
+        )
+      )
     }
-  }
-
-  _openLink (e) {
-    window.open(this.href, '_blank')
   }
 }
 

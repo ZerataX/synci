@@ -1,4 +1,4 @@
-import { html } from 'lit-element'
+import { html, css } from 'lit-element'
 import { PageViewElement } from '../page-view-element.js'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 import { SPOTIFY_CLIENT_ID } from '../../../config.js'
@@ -8,6 +8,10 @@ import { getBaseUrl, createPopUp } from '../../util.js'
 import { store } from '../../store.js'
 
 // These are the actions needed by this element.
+import {
+  openModal,
+  closeModal
+} from '../../actions/app.js'
 import {
   createSession,
   leaveSession
@@ -68,7 +72,15 @@ class SynciSession extends connect(store)(PageViewElement) {
 
   static get styles () {
     return [
-      SharedStyles
+      SharedStyles,
+      css`
+        section > div {
+          width: 100%;
+        }
+        .host {
+          margin: 2em;
+        }
+      `
     ]
   }
 
@@ -77,7 +89,7 @@ class SynciSession extends connect(store)(PageViewElement) {
     this._name = ''
     this._type = ''
     this._users = new Set()
-    this._media = {}
+    this._media = null
     this._time = 0
     this._duration = -1
     this._host = new User()
@@ -102,7 +114,7 @@ class SynciSession extends connect(store)(PageViewElement) {
 
   render () {
     return html`
-      <paper-dialog id="modal" modal>
+      <paper-dialog ?opened=${this.modal.open && this.modal.id === "chooseService"} id="chooseService" modal>
         <h3>Choose a service</h3>
         <div class="buttons">
           <paper-button 
@@ -114,33 +126,68 @@ class SynciSession extends connect(store)(PageViewElement) {
             @click="${this._createSession}"
             value="youtube" dialog-confirm>Youtube</paper-button>  
         </div>
-        </paper-dialog>
+      </paper-dialog>
+      <paper-dialog ?opened=${this.modal.open && this.modal.id === "openLink"} id="openLink">
+        <h3>Open User Profile</h3>
+        <p>This will open a window to an external site.</p>
+        <div class="buttons">
+          <paper-button dialog-dismiss>Decline</paper-button>
+          <paper-button
+            href="${this.modal.props.href}"
+            @click="${this._openLink}" 
+            dialog-confirm autofocus>Accept
+          </paper-button>
+        </div>
+      </paper-dialog>
       <section class="session">
         <div>
         <h2>${this._name || 'You\'re not part of any session'}</h2>
         <hr>
-        <user-card
-          id="host"
-          label="${this._host.name || 'Anonymous'}"
-          iconSrc="${this._host.image || ''}"
-          href="${this._host.href || ''}"></user-card>
-        ${this.getUsers()}
+        <div class="host">
+          <user-card
+            @link-opened=${this._openLinkModal}
+            id="host"
+            label="${this._host.name || 'Anonymous'}"
+            iconSrc="${this._host.image || ''}"
+            href="${this._host.href || ''}"></user-card>
+          ${this.getUsers()}
+          </div>
         </div>
       </section>
     `
   }
 
+  firstUpdated () {
+    const modals = this.shadowRoot.querySelectorAll('paper-dialog')
+    const observer = new window.MutationObserver((mutationsList, observer) => {
+      // wait until action is preformed before closing modal
+      setTimeout(() => {
+        mutationsList.forEach((mutation) => {
+          if (mutation.target.hasAttribute('aria-hidden') && mutation.target.id == this.modal.id) {       
+              store.dispatch(closeModal())
+          }
+        })
+      }, 50)
+    })
+
+    modals.forEach((modal) => {
+      observer.observe(modal, { attributes: true })
+    })
+  }
+
   updated (changedProperties) {
-    this.modal = this.shadowRoot.getElementById('modal')
     const session = store.getState().session // this is probably not the best way to handle this
     if (!session.name && this._name) {
-      this.modal.open() // should probably be an action?
+      if (!this.modal.open && this.modal.id !== 'chooseService') {
+        store.dispatch(openModal('chooseService'))
+      }
     } else if (session.name) {
       window.history.replaceState({}, '', `${getBaseUrl()}session/${session.name}`)
     }
   }
 
   stateChanged (state) {
+    this.modal = state.app.modal
     // session is in state
     if (state.session.name) {
       // state session is not current session
@@ -191,7 +238,7 @@ class SynciSession extends connect(store)(PageViewElement) {
     }
     store.dispatch(createSession(this._name, this._host, type))
     this._isAuth = false
-    this.modal.close()
+    store.dispatch(closeModal())
   }
 
   loggedIn (accessToken, expirationDate) {
@@ -227,6 +274,15 @@ class SynciSession extends connect(store)(PageViewElement) {
         resolve()
       }, false)
     })
+  }
+
+  _openLinkModal (e) {
+    store.dispatch(openModal('openLink', {href:e.detail.href}))
+  }
+    
+
+  _openLink (e) {
+    window.open(e.target.getAttribute('href'), 'user profile')
   }
 }
 

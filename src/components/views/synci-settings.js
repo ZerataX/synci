@@ -100,6 +100,8 @@ class SynciSettings extends connect(store)(PageViewElement) {
 
       <section>
         <h2>Settings</h2>
+      </section>
+      <section>
         <form>
           <paper-input
           class="input"
@@ -135,6 +137,8 @@ class SynciSettings extends connect(store)(PageViewElement) {
           </div>
         </div>
         <hr>
+      </section>
+      <section>
         <code-sample copy-clipboard-button preserve-content>
           <template>
             ${this._state}
