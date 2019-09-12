@@ -72,7 +72,7 @@ const app = (state = INITIAL_STATE, action) => {
     case CLOSE_MODAL:
       return {
         ...state,
-        modal:{
+        modal: {
           open: false,
           id: '',
           props: {}

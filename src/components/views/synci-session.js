@@ -42,7 +42,6 @@ store.addReducers({
   user
 })
 
-
 class SynciSession extends connect(store)(PageViewElement) {
   static get properties () {
     return {
@@ -100,7 +99,7 @@ class SynciSession extends connect(store)(PageViewElement) {
 
   render () {
     return html`
-      <paper-dialog ?opened=${this.modal.open && this.modal.id === "chooseService"} id="chooseService" modal>
+      <paper-dialog ?opened=${this.modal.open && this.modal.id === 'chooseService'} id="chooseService" modal>
         <h3>Choose a service</h3>
         <div class="buttons">
           <paper-button 
@@ -113,7 +112,7 @@ class SynciSession extends connect(store)(PageViewElement) {
             value="youtube" dialog-confirm>Youtube</paper-button>  
         </div>
       </paper-dialog>
-      <paper-dialog ?opened=${this.modal.open && this.modal.id === "openLink"} id="openLink">
+      <paper-dialog ?opened=${this.modal.open && this.modal.id === 'openLink'} id="openLink">
         <h3>Open User Profile</h3>
         <p>This will open a window to an external site.</p>
         <div class="buttons">
@@ -151,8 +150,9 @@ class SynciSession extends connect(store)(PageViewElement) {
       // wait until action is preformed before closing modal
       setTimeout(() => {
         mutationsList.forEach((mutation) => {
-          if (mutation.target.hasAttribute('aria-hidden') && mutation.target.id == this.modal.id) {       
-              store.dispatch(closeModal())
+          if (mutation.target.hasAttribute('aria-hidden') &&
+            mutation.target.id === this.modal.id) {
+            store.dispatch(closeModal())
           }
         })
       }, 50)
@@ -235,13 +235,12 @@ class SynciSession extends connect(store)(PageViewElement) {
     return new Promise((resolve, reject) => {
       const popup = createPopUp(authURL, 'spotify login')
       window.addEventListener('storage', (e) => {
-        if (e.key !== '__synci_spotify_exdate__')
-          return
+        if (e.key !== '__synci_spotify_exdate__') { return }
         const exdate = window.localStorage.getItem('__synci_spotify_exdate__')
         const token = window.localStorage.getItem('__synci_spotify_token__')
         store.dispatch(updateSpotify(token, exdate))
         store.dispatch(updateAuthState(''))
-        
+
         popup.close()
         resolve()
       }, false)
@@ -249,9 +248,8 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   _openLinkModal (e) {
-    store.dispatch(openModal('openLink', {href:e.detail.href}))
+    store.dispatch(openModal('openLink', { href: e.detail.href }))
   }
-    
 
   _openLink (e) {
     window.open(e.target.getAttribute('href'), 'user profile')

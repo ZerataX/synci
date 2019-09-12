@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/4a19398b-ed9c-4f3d-80d5-084f08a1d7db/deploy-status)](https://app.netlify.com/sites/synci/deploys) [![Javascript Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Dependencies](https://david-dm.org/zeratax/synci/status.svg)](https://david-dm.org/zeratax/synci) [![DevDependencies](https://david-dm.org/zeratax/synci/dev-status.svg)](https://david-dm.org/zeratax/synci?type=dev) <!-- markdownlint-disable MD041 -->
+[![Matrix](https://img.shields.io/matrix/synci:dmnd.sh)](https://matrix.to/#/#synci:dmnd.sh) [![Netlify Status](https://api.netlify.com/api/v1/badges/4a19398b-ed9c-4f3d-80d5-084f08a1d7db/deploy-status)](https://app.netlify.com/sites/synci/deploys) [![Javascript Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Dependencies](https://david-dm.org/zeratax/synci/status.svg)](https://david-dm.org/zeratax/synci) [![DevDependencies](https://david-dm.org/zeratax/synci/dev-status.svg)](https://david-dm.org/zeratax/synci?type=dev) <!-- markdownlint-disable MD041 -->
 
 # synci
 
@@ -17,7 +17,7 @@ npm install
 npm run build
 npm run serve
 ```
-To make ferent baseURIs of hthe different builds an URL rewrite is necessary, e.g.:
+
 
 ```nginx
 location / {
@@ -27,6 +27,7 @@ location / {
     proxy_pass http://localhost:8096;
 }
 
+# rewriting the image urls, since the different builds all have different baseURIs
 location /images {
     rewrite ^/images/(.*)$ /esm-bundled/images/$1 last;
 }
@@ -40,6 +41,10 @@ npm run build:static
 ```
 
 And then move your prefered build from `build/` into your webroot
+
+### ipfs
+
+Check the `./scripts/publish-ipfs.sh` so it points at your ipns
 
 ## contribute
 

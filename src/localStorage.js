@@ -15,8 +15,8 @@ export const saveState = (state) => {
   }
   if (stateTemp.session) {
     delete stateTemp.session.time
-  }  
-  
+  }
+
   const stringifiedNewStatePerm = JSON.stringify(statePerm)
   const stringifiedNewStateTemp = JSON.stringify(stateTemp)
 

@@ -168,11 +168,12 @@ class SynciSettings extends connect(store)(PageViewElement) {
   updated (changedProperties) {
     const user = store.getState().user
 
-    if ( this._initialised &&
+    if (this._initialised && (
       (this._username !== user.name) ||
       (this._avatar !== user.image) ||
       (this._href !== user.href) ||
       (this._volume !== user.volume)
+    )
     ) {
       store.dispatch(updateUserInfo(
         this._username,
