@@ -14,7 +14,7 @@ class IconSlider extends LitElement {
     return css`
       .slider {
         width: 100%;
-        display:flex;
+        display: flex;
         justify-content:center;
         align-items:center;
       }

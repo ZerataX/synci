@@ -3,6 +3,7 @@ import { PageViewElement } from '../page-view-element.js'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 import { SPOTIFY_CLIENT_ID } from '../../../config.js'
 import { getBaseUrl, createPopUp } from '../../util.js'
+import { User, createState, loggedIn } from '../auth.js'
 
 // This element is connected to the Redux store.
 import { store } from '../../store.js'
@@ -30,6 +31,7 @@ import { style as SharedStyles } from '../shared-styles-css.js'
 
 // These are components needed by this element
 import '../user-card.js'
+import '../sync-player.js'
 
 import app from '../../reducers/app.js'
 import session from '../../reducers/session.js'
@@ -40,22 +42,6 @@ store.addReducers({
   user
 })
 
-class User {
-  constructor (id, name, image, href) {
-    this._id = id
-    this._name = name
-    this._image = image
-    this._href = href
-  }
-
-  get id () { return this._id }
-  get name () { return this._name }
-  set name (name) { this._name = name }
-  get image () { return this._image }
-  set image (image) { this._image = image }
-  get href () { return this._href }
-  set href (href) { this._href = href }
-}
 
 class SynciSession extends connect(store)(PageViewElement) {
   static get properties () {
@@ -154,6 +140,8 @@ class SynciSession extends connect(store)(PageViewElement) {
           </div>
         </div>
       </section>
+      <section>
+      </section>
     `
   }
 
@@ -210,24 +198,14 @@ class SynciSession extends connect(store)(PageViewElement) {
     }
   }
 
-  createState () {
-    const validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    let array = new Uint8Array(40)
-    window.crypto.getRandomValues(array)
-    array = array.map(x => validChars.charCodeAt(x % validChars.length))
-    const randomState = String.fromCharCode.apply(null, array)
-
-    return randomState
-  }
-
   async _createSession (e) {
     const type = e.target.getAttribute('value')
     const user = store.getState().user
     this._isAuth = true
-    console.debug(e.target)
+
     switch (type) {
       case 'spotify':
-        if (!this.loggedIn(
+        if (!loggedIn(
           user.spotify.accessToken,
           new Date(user.spotify.expirationDate)
         )) {
@@ -236,24 +214,16 @@ class SynciSession extends connect(store)(PageViewElement) {
         store.dispatch(fetchSpotifyUserInfo())
         break
     }
+
     store.dispatch(createSession(this._name, this._host, type))
     this._isAuth = false
     store.dispatch(closeModal())
   }
 
-  loggedIn (accessToken, expirationDate) {
-    if (accessToken) {
-      if (expirationDate - Date.now() > 10 * 60 * 1000) {
-        return true
-      }
-    }
-    return false
-  }
-
   authSpotify () {
     const callbackUrl = `${getBaseUrl()}callback/spotify`
     const scopes = window.encodeURI('user-read-playback-state user-modify-playback-state user-read-email')
-    const state = this.createState()
+    const state = createState()
     const authURL = 'https://accounts.spotify.com/authorize' +
       `?client_id=${SPOTIFY_CLIENT_ID}` +
       `&redirect_uri=${callbackUrl}` +
@@ -265,7 +235,6 @@ class SynciSession extends connect(store)(PageViewElement) {
     return new Promise((resolve, reject) => {
       const popup = createPopUp(authURL, 'spotify login')
       window.addEventListener('storage', (e) => {
-        console.log(e)
         if (e.key !== '__synci_spotify_exdate__')
           return
         const exdate = window.localStorage.getItem('__synci_spotify_exdate__')

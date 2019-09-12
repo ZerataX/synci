@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   host: {},
   users: new Set(),
   media: {},
-  time: 0,
+  time: -1,
   duration: -1
 }
 

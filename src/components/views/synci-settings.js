@@ -9,9 +9,11 @@ import { store } from '../../store.js'
 import {
   updateUserInfo
 } from '../../actions/user.js'
+
 // These are the shared styles needed by this element.
 import { style as SharedStyles } from '../shared-styles-css.js'
 
+// These are the elements needed by this element.
 import '@polymer/paper-input/paper-input.js'
 import '@kuscamara/code-sample/code-sample.js'
 import '@polymer/iron-image/iron-image.js'
@@ -55,6 +57,7 @@ class SynciSettings extends connect(store)(PageViewElement) {
     this._href = ''
     this._volume = 20
     this.code = null
+    this._initialised = false
   }
 
   render () {
@@ -164,17 +167,18 @@ class SynciSettings extends connect(store)(PageViewElement) {
 
   updated (changedProperties) {
     const user = store.getState().user
-    if (
+
+    if ( this._initialised &&
       (this._username !== user.name) ||
-      (this._avatar !== user.avatar) ||
+      (this._avatar !== user.image) ||
       (this._href !== user.href) ||
       (this._volume !== user.volume)
     ) {
       store.dispatch(updateUserInfo(
-        this._username || user.name,
-        this._avatar || user.avatar,
-        this._href || user.href,
-        this._volume || user.volume,
+        this._username,
+        this._avatar,
+        this._href,
+        this._volume,
         true
       ))
       this.code.innerHTML = `
@@ -198,6 +202,7 @@ class SynciSettings extends connect(store)(PageViewElement) {
       this._avatar = state.user.image
       this._href = state.user.href
       this._volume = state.user.volume
+      this._initialised = true
     }
   }
 }

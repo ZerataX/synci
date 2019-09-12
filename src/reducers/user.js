@@ -70,7 +70,7 @@ const user = (state = INITIAL_STATE, action) => {
     case REQUEST_USER_INFO:
       return {
         ...state,
-        isFetching: false,
+        isFetching: true,
         failure: false
       }
     case RECEIVE_USER_INFO:
@@ -79,7 +79,7 @@ const user = (state = INITIAL_STATE, action) => {
         name: action.name,
         image: action.image,
         href: action.href,
-        isFetching: true,
+        isFetching: false,
         failure: false
       }
     case FAIL_USER_INFO:
