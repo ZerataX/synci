@@ -46,6 +46,7 @@ class IconSlider extends LitElement {
             }
         </style>
       </custom-style>
+
       <label id="heading" aria-hidden="true">${this.heading}</label>
       <span class="slider">
         <iron-icon icon="${this.iconStart}"></iron-icon>

@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element'
+import { LitElement, html, css } from 'lit-element'
 import { style } from './user-card-css.js'
 
 import '@polymer/iron-icon/iron-icon.js'
@@ -24,7 +24,30 @@ class UserCard extends LitElement {
 
   static get styles () {
     return [
-      style
+      style,
+      css`
+        span {
+          padding-left: 10%;
+          font-size: 1.3em;
+        }
+        .avatar-image {
+          z-index: 1;
+          position: relative;
+          width: 11vh;
+          height: 11vh;
+          max-width: 80px;
+          max-height: 80px;
+        }
+        .avatar-icon {
+          z-index: 1;
+          position: relative;
+        }
+        .card-content {
+          display:flex;
+          justify-content:center;
+          align-items:center;
+        }
+      `
     ]
   }
 
@@ -57,24 +80,6 @@ class UserCard extends LitElement {
           @apply --paper-material-elevation-5;
         }
 
-        .avatar-image {
-          z-index: 1;
-          position: relative;
-          width: 11vh;
-          height: 11vh;
-          max-width: 80px;
-          max-height: 80px;
-        }
-        .avatar-icon {
-          z-index: 1;
-          position: relative;
-        }
-        .card-content {
-          display:flex;
-          justify-content:center;
-          align-items:center;
-        }
-
         paper-card {
           z-index: 0;
           cursor: pointer;
@@ -103,10 +108,6 @@ class UserCard extends LitElement {
           --paper-icon-button-ink-color: var(--app-secondary-color);
           background-color: var(--app-primary-color);
           color: white;
-        }
-        span {
-          padding-left: 10%;
-          font-size: 1.3em;
         }
         </style>
       </custom-style>
