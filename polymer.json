@@ -7,6 +7,8 @@
   "extraDependencies": [
     "node_modules/@webcomponents/webcomponentsjs/**",
     "push-manifest.json",
+    "manifest.json",
+    "browserconfig.xml",
     "404.html"
   ],
   "builds": [
