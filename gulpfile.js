@@ -1,9 +1,7 @@
 const gulp = require('gulp')
 const rename = require('gulp-rename')
 const replace = require('gulp-replace')
-const realFavicon = require('gulp-real-favicon')
 const del = require('del')
-const fs = require('fs')
 
 gulp.task('prpl-server:clean', () => {
   return del('server/build')

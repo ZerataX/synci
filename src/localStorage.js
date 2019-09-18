@@ -3,10 +3,10 @@ export const saveState = (state) => {
   const jsonSession = window.sessionStorage.getItem('__synci__') || '{}'
   // seperate temporary from permament data
   const stateTemp = {
-    session: state.session
+    session: Object.assign({}, state.session)
   }
   const statePerm = {
-    user: state.user
+    user: Object.assign({}, state.user)
   }
 
   if (statePerm.user) {
@@ -15,6 +15,9 @@ export const saveState = (state) => {
   }
   if (stateTemp.session) {
     delete stateTemp.session.time
+    delete stateTemp.session.connecting
+    delete stateTemp.session.isConnected
+    stateTemp.session.users = (stateTemp.session.users) ? [...stateTemp.session.users] : new Set()
   }
 
   const stringifiedNewStatePerm = JSON.stringify(statePerm)
@@ -35,6 +38,13 @@ export const loadState = () => {
   const statePerm = (window.location.hash.includes('develop')) ? {} : JSON.parse(jsonLocal)
   const stateTemp = JSON.parse(jsonSession)
 
+  if (stateTemp.session) {
+    try {
+      stateTemp.session.users = new Set(stateTemp.session.users)
+    } catch (error) {
+      stateTemp.session.users = new Set()
+    }
+  }
   const state = Object.assign(statePerm, stateTemp)
 
   return state

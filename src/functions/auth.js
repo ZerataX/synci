@@ -33,6 +33,15 @@ export class User {
   set href (href) {
     this._href = href
   }
+
+  get JSON () {
+    return {
+      id: this._id,
+      name: this._name,
+      image: this._image,
+      href: this._href
+    }
+  }
 }
 
 export function loggedIn (accessToken, expirationDate) {

@@ -9,7 +9,8 @@
     "push-manifest.json",
     "manifest.json",
     "browserconfig.xml",
-    "404.html"
+    "404.html",
+    "dist/bundle.js"
   ],
   "builds": [
     {

@@ -33,6 +33,29 @@ export const resetUserInfo = () => {
   }
 }
 
+const requestUserInfo = (service) => {
+  return {
+    type: REQUEST_USER_INFO,
+    service
+  }
+}
+
+const receiveUserInfo = (name, image, href) => {
+  return {
+    type: RECEIVE_USER_INFO,
+    name,
+    image,
+    href
+  }
+}
+
+const failUserInfo = () => {
+  return {
+    type: FAIL_USER_INFO
+  }
+}
+
+// SPOTIFY
 export const updateSpotify = (accessToken, expirationDate) => {
   return {
     type: UPDATE_SPOTIFY_LOGIN,
@@ -71,26 +94,4 @@ export const fetchSpotifyUserInfo = () => (dispatch, getState) => {
       return Promise.resolve()
     }
   })
-}
-
-const requestUserInfo = (service) => {
-  return {
-    type: REQUEST_USER_INFO,
-    service
-  }
-}
-
-const receiveUserInfo = (name, image, href) => {
-  return {
-    type: RECEIVE_USER_INFO,
-    name,
-    image,
-    href
-  }
-}
-
-const failUserInfo = () => {
-  return {
-    type: FAIL_USER_INFO
-  }
 }

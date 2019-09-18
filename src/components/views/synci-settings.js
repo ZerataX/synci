@@ -39,7 +39,7 @@ class SynciSettings extends connect(store)(PageViewElement) {
       _avatar: { type: String },
       _href: { type: String },
       _volume: { type: Number },
-      _state: { type: String, reflect: true }
+      _state: { type: String }
     }
   }
 

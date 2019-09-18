@@ -4,6 +4,9 @@ export const ADD_SESSION_USER = 'ADD_SESSION_USER'
 export const UPDATE_SESSION_MEDIA = 'UPDATE_SESSION_MEDIA'
 export const CREATE_SESSION = 'CREATE_SESSION'
 export const LEAVE_SESSION = 'LEAVE_SESSION'
+export const CONNECT_SESSION = 'CONNECT_SESSION'
+export const SESSION_CONNECTED = 'SESSION_CONNECTED'
+export const CHANGE_HOST = 'CHANGE_HOST'
 
 export const createSession = (name, host, mediaType, users = new Set(), media = {}, time = 0, duration = -1) => {
   return {
@@ -38,5 +41,24 @@ export const seekTimestamp = (time) => {
   return {
     type: UPDATE_SESSION_MEDIA,
     time
+  }
+}
+
+export const connectSession = () => {
+  return {
+    type: CONNECT_SESSION
+  }
+}
+
+export const sessionConnected = () => {
+  return {
+    type: SESSION_CONNECTED
+  }
+}
+
+export const changeHost = (host) => {
+  return {
+    type: CHANGE_HOST,
+    host
   }
 }
