@@ -165,9 +165,8 @@ class SynciSession extends connect(store)(PageViewElement) {
       if (!this._connected) {
         if (!this._isConnecting) {
           console.debug('connecting')
-          await store.dispatch(this._page)
+          await store.dispatch(connectSession(this._page))
         }
-        return
       }
       if (!this._type && this.isHost()) {
         if (!this.modal.open && this.modal.id !== 'chooseService') {

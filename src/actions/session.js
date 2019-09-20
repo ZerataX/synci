@@ -68,7 +68,6 @@ const waitForPeers = (timeoutMS, room) => new Promise((resolve, reject) => {
 
 export const sessionConnected = (room) => (dispatch, getState) => {
   return new Promise((resolve) => {
-    console.debug(room)
     waitForPeers(10 * 1000, room).then(() => {
       console.debug('peers found')
       dispatch({
@@ -78,6 +77,7 @@ export const sessionConnected = (room) => (dispatch, getState) => {
     }).catch(() => {
       console.debug('no peers found')
       const me = getState().user
+      console.debug(me)
       dispatch(changeHost(
         {
           host: {

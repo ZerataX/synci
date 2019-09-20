@@ -115,14 +115,14 @@ class UserCard extends LitElement {
       <paper-card>
         <div class="card-content">
           <div class="avatar-icon" @click="${this._checkLink}">
-          <iron-icon
-            elevation="2"
-            ?hidden=${!!(this.iconSrc)}
-            id="icon"
-            tabindex="1"
-            icon="${this.icon}">
-          </iron-icon>
-              <paper-ripple class="circle" recenters></paper-ripple>
+            <iron-icon
+              elevation="2"
+              ?hidden=${!!(this.iconSrc)}
+              id="icon"
+              tabindex="1"
+              icon="${this.icon}">
+            </iron-icon>
+            <paper-ripple class="circle" recenters></paper-ripple>
           </div>
           <div ?hidden=${!(this.iconSrc)} class="avatar-image" @click="${this._checkLink}">
             <iron-image

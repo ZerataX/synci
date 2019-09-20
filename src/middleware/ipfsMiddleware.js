@@ -31,16 +31,16 @@ const ipfsMiddleware = () => {
   const onPeerJoined = (store, peer) => {
     const session = store.getState().session
     console.debug('Peer joined', peer)
-    store.dispatch({
-      type: NEW_MESSAGE,
-      message: {
-        type: 'change_host',
-        host: session.host
-        // user id to verify?
-      }
-    })
-
-    // if host send session info
+    if (session.host) {
+      store.dispatch({
+        type: NEW_MESSAGE,
+        message: {
+          type: 'change_host',
+          host: session.host
+          // user id to verify?
+        }
+      })
+    }
   }
 
   const onMessage = store => (message) => {
@@ -49,6 +49,7 @@ const ipfsMiddleware = () => {
 
     switch (payload.type) {
       case 'change_host':
+        console.debug(payload)
         store.dispatch(changeHost(payload.host))
         break
       case 'change_media':
