@@ -91,7 +91,7 @@ export const fetchSpotifyUserInfo = () => (dispatch, getState) => {
         )))
         .catch(() => dispatch(failUserInfo()))
     } else {
-      return Promise.resolve()
+      return resolve()
     }
   })
 }

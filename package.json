@@ -19,7 +19,7 @@
     "watch:styling": "nodemon -e scss -x \"npm run prepare:styling\"",
     "prepare": "npm run prepare:styling && npm run prepare:dependencies",
     "prepare:styling": "./scripts/build-styling.sh",
-    "prepare:dependencies": "mkdir -p dist/ && browserify deps/cjsmodules.js > dist/bundle.js",
+    "prepare:dependencies": "mkdir -p dist/ && find deps -maxdepth 1 -type f -name \"*.js\" -exec sh -c 'browserify \"deps/$(basename {})\" > \"dist/$(basename {})\"' \\;",
     "serve": "prpl-server --root server/build --port 8096",
     "serve:static": "polymer serve --port 5000 build/esm-bundled",
     "favicons": "./scripts/favicons.sh",
@@ -76,7 +76,7 @@
     "puppeteer": "^1.5.0",
     "sass": "^1.23.0-module.beta.1",
     "sass-lint": "^1.13.1",
-    "standard": "^14.1.0",
+    "standard": "^14.3.1",
     "tinyify": "^2.5.1",
     "wct-mocha": "^1.0.1"
   }

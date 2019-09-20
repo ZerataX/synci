@@ -23,6 +23,7 @@ const INITIAL_STATE = {
     session: false
   },
   offline: false,
+  loading: false,
   drawerOpened: false,
   snackbarOpened: false
 }

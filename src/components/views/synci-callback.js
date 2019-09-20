@@ -50,15 +50,15 @@ class SynciCallback extends connect(store)(PageViewElement) {
     }
 
     const type = state.app.item
-    const authState = window.localStorage.getItem('__synci_spotify_state__')
+    const authState = window.localStorage.getItem('__synci_auth_state__')
     switch (type) {
       case 'spotify':
         if (authState !== params.state) {
           window.alert(`state does not match ${authState} != ${params.state}`)
         } else {
-          const exDate = new Date(Date.now() + parseInt(params.expires_in) * 1000)
+          const expireDate = new Date(Date.now() + parseInt(params.expires_in) * 1000)
           window.localStorage.setItem('__synci_spotify_token__', params.access_token)
-          window.localStorage.setItem('__synci_spotify_exdate__', exDate)
+          window.localStorage.setItem('__synci_spotify_expireDate__', expireDate)
         }
         break
       default:

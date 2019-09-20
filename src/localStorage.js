@@ -14,6 +14,7 @@ export const saveState = (state) => {
     delete statePerm.user.failure
   }
   if (stateTemp.session) {
+    delete stateTemp.session.host
     delete stateTemp.session.time
     delete stateTemp.session.connecting
     delete stateTemp.session.isConnected

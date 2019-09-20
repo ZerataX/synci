@@ -4,12 +4,11 @@ import {
   ADD_SESSION_USER,
   UPDATE_SESSION_MEDIA,
   CREATE_SESSION,
-  LEAVE_SESSION,
+  SESSION_LEFT,
   CONNECT_SESSION,
-  SESSION_CONNECTED,
-  CHANGE_HOST
+  SESSION_CONNECTED
 } from '../actions/session.js'
-import { User } from '../functions/auth.js';
+import { User } from '../modules/auth.js'
 
 const INITIAL_STATE = {
   name: '',
@@ -19,8 +18,8 @@ const INITIAL_STATE = {
   media: {},
   time: -1,
   duration: -1,
-  isConnected: false,
-  connecting: false
+  connected: false,
+  isConnecting: false
 }
 
 const session = (state = INITIAL_STATE, action) => {
@@ -28,7 +27,12 @@ const session = (state = INITIAL_STATE, action) => {
     case UPDATE_SESSION_HOST:
       return {
         ...state,
-        host: action.host
+        host: new User(
+          action.host.id,
+          action.host.name,
+          action.host.image,
+          action.host.href
+        )
       }
     case REMOVE_SESSION_USER:
       return {
@@ -62,20 +66,15 @@ const session = (state = INITIAL_STATE, action) => {
     case CONNECT_SESSION:
       return {
         ...state,
-        connecting: true
+        isConnecting: true
       }
     case SESSION_CONNECTED:
       return {
         ...state,
-        connecting: false,
-        isConnected: true
+        isConnecting: false,
+        connected: true
       }
-    case CHANGE_HOST:
-      return {
-        ...state,
-        host: action.host
-      }
-    case LEAVE_SESSION:
+    case SESSION_LEFT:
       return INITIAL_STATE
     default:
       return state

@@ -5,19 +5,21 @@ import {
   combineReducers
 } from 'redux'
 import thunk from 'redux-thunk'
+import ipfsMiddleware from './middleware/ipfsMiddleware.js'
 import { lazyReducerEnhancer } from 'pwa-helpers/lazy-reducer-enhancer.js'
-
 import { loadState, saveState } from './localStorage.js'
 import app from './reducers/app.js'
 
 const devCompose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const middleware = [thunk, ipfsMiddleware]
 
 export const store = createStore(
   state => state,
   loadState(),
   devCompose(
     lazyReducerEnhancer(combineReducers),
-    applyMiddleware(thunk))
+    applyMiddleware(...middleware)
+  )
 )
 
 // Initially loaded reducers.
