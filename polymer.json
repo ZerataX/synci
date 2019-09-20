@@ -10,7 +10,8 @@
     "manifest.json",
     "browserconfig.xml",
     "404.html",
-    "dist/bundle.js"
+    "dist/js-ipfs.js",
+    "dist/ipfs-pubsub-room.js"
   ],
   "builds": [
     {
