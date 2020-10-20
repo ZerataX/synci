@@ -1,0 +1,8 @@
+/*
+required
+    play song
+    seek to timestamp
+    see current timestamp
+optional
+    set volume
+*/

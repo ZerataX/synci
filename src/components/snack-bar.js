@@ -1,5 +1,4 @@
 import { LitElement, html } from 'lit-element'
-import { style } from './snack-bar-css.js'
 
 class SnackBar extends LitElement {
   static get properties () {
@@ -9,7 +8,7 @@ class SnackBar extends LitElement {
   }
 
   static get styles () {
-    return style
+    return css``
   }
 
   render () {

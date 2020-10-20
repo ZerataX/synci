@@ -25,8 +25,6 @@ import '@polymer/app-layout/app-scroll-effects/effects/waterfall.js'
 import '@polymer/app-layout/app-toolbar/app-toolbar.js'
 import './snack-bar.js'
 
-import { style } from './synci-app-css.js'
-
 class SynciApp extends connect(store)(LitElement) {
   static get properties () {
     return {
@@ -39,7 +37,7 @@ class SynciApp extends connect(store)(LitElement) {
   }
 
   static get styles () {
-    return style
+    return css``
   }
 
   render () {

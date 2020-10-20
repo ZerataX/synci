@@ -3,7 +3,7 @@ import {
   LEAVE_ROOM,
   BROADCAST_ROOM,
   NEW_MESSAGE
-} from '../actions/ipfs.js'
+} from '../actions/websocket.js'
 import {
   changeHost,
   sessionConnected,
@@ -11,6 +11,7 @@ import {
 } from '../actions/session.js'
 
 // based on https://dev.to/aduranil/how-to-use-websockets-with-redux-a-step-by-step-guide-to-writing-understanding-connecting-socket-middleware-to-your-project-km3
+// TODO: turn this back into websockets and not IPFS
 const ipfsMiddleware = () => {
   let room = null
   // let Room = null // pubsub room constructor

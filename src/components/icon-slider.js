@@ -59,7 +59,7 @@ class IconSlider extends LitElement {
   firstUpdated () {
     const slider = this.shadowRoot.getElementById('slider')
     const heading = this.shadowRoot.querySelector('#heading')
-    const observer = new window.MutationObserver(() => {
+    const observer = new window.MutationObserver(() => { // TODO: use events instead https://github.com/PolymerElements/paper-slider/blob/master/paper-slider.js#L815
       if (slider.hasAttribute('pressed')) {
         heading.classList.add('active')
       } else {

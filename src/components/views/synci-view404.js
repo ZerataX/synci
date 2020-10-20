@@ -2,7 +2,7 @@ import { html } from 'lit-element'
 import { PageViewElement } from '../page-view-element.js'
 
 // These are the shared styles needed by this element.
-import { style as SharedStyles } from '../shared-styles-css.js'
+import { style as SharedStyles } from '../shared-styles.js'
 
 class SynciView404 extends PageViewElement {
   static get styles () {

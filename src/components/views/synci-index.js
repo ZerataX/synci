@@ -3,7 +3,7 @@ import { PageViewElement } from '../page-view-element.js'
 import words from '../wordlist.js'
 
 // These are the shared styles needed by this element.
-import { style as SharedStyles } from '../shared-styles-css.js'
+import { style as SharedStyles } from '../shared-styles.js'
 
 // These are components needed by this element
 import '../random-item-input.js'

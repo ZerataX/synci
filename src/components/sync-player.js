@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit-element'
 import { PageViewElement } from './page-view-element.js'
 
+// chooses players from players/*.js
+
 class SyncPlayer extends PageViewElement {
   static get properties () {
     return {

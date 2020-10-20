@@ -1,3 +1,14 @@
+/* 
+1. user connects 
+2a. nobody else  -> user = host
+2b. users.push(user)
+3. host allows certain services that lazy load the needed reducers
+3b. if service needs login all users asked to login or kicked
+4. from there on host can set settings and possibly user if they allow it
+*/
+
+
+
 import { html, css } from 'lit-element'
 import { PageViewElement } from '../page-view-element.js'
 import { connect } from 'pwa-helpers/connect-mixin.js'
@@ -19,29 +30,31 @@ import {
   connectSession
 } from '../../actions/session.js'
 import {
-  updateAuthState,
-  updateSpotify,
-  fetchSpotifyUserInfo
+  updateAuthState
 } from '../../actions/user.js'
+
+// only do this if spotify allowed for session/room
+// import { 
+//   updateAuthState,
+//   updateSpotify,
+//   fetchSpotifyUserInfo
+// } from '../../actions/services/spotify.js'
+
 // These are components needed by this element
 import '@polymer/paper-dialog'
-
-// These are the shared styles needed by this element.
-import { style as SharedStyles } from '../shared-styles-css.js'
-
-// These are components needed by this element
 import '../user-card.js'
 // import '../sync-player.js'
+
+// These are the shared styles needed by this element.
+import { style as SharedStyles } from '../shared-styles.js'
 
 import app from '../../reducers/app.js'
 import session from '../../reducers/session.js'
 import user from '../../reducers/user.js'
-import ipfs from '../../reducers/ipfs.js'
 store.addReducers({
   app,
   session,
-  user,
-  ipfs
+  user
 })
 
 class SynciSession extends connect(store)(PageViewElement) {
@@ -70,8 +83,7 @@ class SynciSession extends connect(store)(PageViewElement) {
     this._host = new User()
     this._me = new User()
     this._isFetching = false // is currently fetching user info
-    this._connected = false // connected to pubsub room
-    this._isConnecting = false // is currently connecting to pubsub room
+    this._isConnecting = false // is currently connecting to webRTC
     this._page = '' // /session/{page}
     this.modal = null
   }
@@ -143,6 +155,7 @@ class SynciSession extends connect(store)(PageViewElement) {
   async firstUpdated () {
     await store.dispatch(connectSession(this._page))
     const modals = this.shadowRoot.querySelectorAll('paper-dialog')
+    // TODO: instead of observer https://github.com/Polymer/lit-element/issues/81
     const observer = new window.MutationObserver((mutationsList, observer) => {
       // wait until action is preformed before closing modal
       setTimeout(() => {
@@ -161,6 +174,7 @@ class SynciSession extends connect(store)(PageViewElement) {
   }
 
   async updated (changedProperties) {
+    // TODO: this buisness logic is confusing
     if (this._page) {
       if (!this._connected) {
         if (!this._isConnecting) {
@@ -186,7 +200,7 @@ class SynciSession extends connect(store)(PageViewElement) {
 
   stateChanged (state) {
     this.modal = state.app.modal
-    this._me = new User(
+    this._me = new User( // TODO: creating a class everytime seems awful??
       state.user.id,
       state.user.name,
       state.user.image,
@@ -219,6 +233,12 @@ class SynciSession extends connect(store)(PageViewElement) {
       store.dispatch(leaveSession())
     }
 
+    /* TODO: kinda weird that all the services are in so many places
+    components/views/{synci-session.js,synci-callback},
+    components/players/*.js
+    actions/services/*.js,
+    reducers/logins.js
+    */
     switch (type) {
       case 'spotify':
         if (!loggedIn(

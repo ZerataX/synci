@@ -2,8 +2,6 @@ import {
   UPDATE_AUTH_STATE,
   UPDATE_USER_INFO,
   RESET_USER_INFO,
-  UPDATE_SPOTIFY_LOGIN,
-  LOGOUT_SPOTIFY,
   REQUEST_USER_INFO,
   RECEIVE_USER_INFO,
   FAIL_USER_INFO
@@ -23,10 +21,7 @@ const INITIAL_STATE = {
   authState: '',
   isFetching: false,
   failure: false,
-  spotify: {
-    accessToken: '',
-    expirationDate: ''
-  }
+  logins: {}
 }
 
 const user = (state = INITIAL_STATE, action) => {
@@ -53,19 +48,6 @@ const user = (state = INITIAL_STATE, action) => {
         href: '',
         volume: 20,
         overwrite: false
-      }
-    case UPDATE_SPOTIFY_LOGIN:
-      return {
-        ...state,
-        spotify: {
-          accessToken: action.accessToken,
-          expirationDate: action.expirationDate
-        }
-      }
-    case LOGOUT_SPOTIFY:
-      return {
-        ...state,
-        spotify: {}
       }
     case REQUEST_USER_INFO:
       return {

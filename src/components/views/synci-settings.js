@@ -11,7 +11,7 @@ import {
 } from '../../actions/user.js'
 
 // These are the shared styles needed by this element.
-import { style as SharedStyles } from '../shared-styles-css.js'
+import { style as SharedStyles } from '../shared-styles.js'
 
 // These are the elements needed by this element.
 import '@polymer/paper-input/paper-input.js'
@@ -156,7 +156,7 @@ class SynciSettings extends connect(store)(PageViewElement) {
     this.code = this.shadowRoot.querySelector('code-sample')
     const inputs = this.shadowRoot.querySelectorAll('.input')
     inputs.forEach((input) => {
-      input.addEventListener('value-changed', () => {
+      input.addEventListener('value-changed', () => { // TODO: something like @change should be used in render() https://github.com/Polymer/lit-element/issues/81
         input.setAttribute('value', input.value)
         const prop = `_${input.getAttribute('id')}`
         this.setAttribute(prop, input.value)

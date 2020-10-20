@@ -3,14 +3,14 @@ import { PageViewElement } from '../page-view-element.js'
 import { connect } from 'pwa-helpers/connect-mixin.js'
 
 // These are the shared styles needed by this element.
-import { style as SharedStyles } from '../shared-styles-css.js'
+import { style as SharedStyles } from '../shared-styles.js'
 
 // This element is connected to the Redux store.
 import { store } from '../../store.js'
 
 import user from '../../reducers/user.js'
 store.addReducers({
-  user
+  user // TODO: is this actually being used?
 })
 
 class SynciCallback extends connect(store)(PageViewElement) {

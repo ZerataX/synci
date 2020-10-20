@@ -1,9 +1,7 @@
 import {
-  getIpfs,
-  getPubsub,
   subscribeRoom,
   leaveRoom
-} from './ipfs.js'
+} from './websocket.js'
 
 export const UPDATE_SESSION_HOST = 'UPDATE_SESSION_HOST'
 export const REMOVE_SESSION_USER = 'REMOVE_SESSION_USER'
@@ -54,29 +52,11 @@ export const seekTimestamp = (time) => {
   }
 }
 
-const waitForPeers = (timeoutMS, room) => new Promise((resolve, reject) => {
-  const check = () => {
-    console.debug('checking for peers...')
-    if (room.getPeers().length) {
-      return resolve()
-    } else if ((timeoutMS -= 100) < 0) {
-      return reject(new Error('timed out!'))
-    } else { setTimeout(check, 100) }
-  }
-  setTimeout(check, 100)
-})
 
 export const sessionConnected = (room) => (dispatch, getState) => {
   return new Promise((resolve) => {
-    console.debug(room)
-    waitForPeers(10 * 1000, room).then(() => {
-      console.debug('peers found')
-      dispatch({
-        type: SESSION_CONNECTED
-      })
-      return resolve()
-    }).catch(() => {
-      console.debug('no peers found')
+    // if nobody already connected
+    {
       const me = getState().user
       dispatch(changeHost(
         {
@@ -88,26 +68,16 @@ export const sessionConnected = (room) => (dispatch, getState) => {
           }
         }
       ))
-      dispatch({
-        type: SESSION_CONNECTED
-      })
-      return resolve()
+    }
+    dispatch({
+      type: SESSION_CONNECTED
     })
+    return resolve()
   })
 }
 
 export const connectSession = (name) => (dispatch, getState) => {
-  return new Promise((resolve, reject) => {
-    dispatch({
-      type: CONNECT_SESSION
-    })
-    Promise.all([
-      dispatch(getPubsub()),
-      dispatch(getIpfs())
-    ]).then(() => {
-      dispatch(subscribeRoom(name))
-    })
-  })
+  dispatch(subscribeRoom(name))
 }
 
 export const changeHost = (host) => {

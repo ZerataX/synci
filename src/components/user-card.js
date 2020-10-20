@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit-element'
-import { style } from './user-card-css.js'
 
 import '@polymer/iron-icon/iron-icon.js'
 import '@polymer/iron-icons/iron-icons.js'
@@ -23,9 +22,7 @@ class UserCard extends LitElement {
   }
 
   static get styles () {
-    return [
-      style,
-      css`
+    return css`
         span {
           padding-left: 10%;
           font-size: 1.3em;
@@ -48,7 +45,6 @@ class UserCard extends LitElement {
           align-items:center;
         }
       `
-    ]
   }
 
   constructor () {
